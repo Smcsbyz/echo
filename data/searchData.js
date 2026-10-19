@@ -1,25 +1,12 @@
 /* ============================================================
    文件路径：data/searchData.js
    说明：给力GAME交流站 搜索数据
-         - post1～post47 内容已更新
-         - “空屋谜踪”统一改为“我的小屋”
-         - searchIndex 只保留规定的映射
-           * “车祸” → post5（已移除 post12）
-           * “赛博飞升” → post12（新增）
-         - post6 / post7 / post56 的作者已改为乱码字符串
-           “锟斤拷锟斤拷锟斤拷”，并锚定 authorAvatar = avatar41.png
-         - post14 已替换为新内容（含加粗评论）
-         - post5 已替换（含可点击蓝色斜体链接）
-         - post25 / post27 已替换为新内容
-         - post21 已替换为新内容
-         - post56 已替换为“后记”，日期为 DYNAMIC_DATE
-
          本次修正：
-           1. post47 的版块从“新手指南”改为“站务公告”
-           2. board-admin（站务公告）的“最后发表”更新为 post47 的信息
-           3. board-guide（新手指南）的“最后发表”更新为 post46 的信息
-           4. threadsByBoard 中 post47 从 board-guide 移到 board-admin
-           5. 其他映射保持不变
+           1. post41 替换为「大家好，我是从FGA来的」（小白菜难民），
+              并在 threadsByBoard['board-screenshot'] 中补入该条目，
+              使 post41 能在「闲谈茶馆」版块中正常显示
+           2. post5 的 board 字段保持为「闲谈茶馆」
+           3. 其余帖子数据与排序均保持原样
    暴露：window.SearchData
    ============================================================ */
 (function () {
@@ -1179,22 +1166,23 @@
       comments: []
     },
 
-    /* post41 */
+    /* post41 —— 本次更新为「大家好，我是从FGA来的」 */
     post41: {
-      id: 'post41',
-      title: '大家好，我是从B站来的',
-      author: 'B站难民',
-      authorUID: 200039,
-      date: '2024-05-15',
-      board: '闲谈茶馆',
-      replyCount: 5,
-      viewCount: 402,
-      content: 'B站最近改版太频繁了，用不惯，听说这个论坛氛围不错，就过来了。',
+      id: "post41",
+      title: "大家好，我是从FGA来的",
+      author: "小白菜难民",
+      date: "2022-05-15",
+      board: "闲谈茶馆",
+      content: "FGA最近改版太频繁了，老资历用不习惯，听说这个论坛氛围不错，就过来看看",
       comments: [
-        { author: '夜航船', content: '欢迎，这里确实安静一些', date: '2024-05-15' },
-        { author: '半盏灯', content: 'B站现在确实变味了', date: '2024-05-15' },
-        { author: '南山客', content: '论坛人少但都是真爱', date: '2024-05-15' }
-      ]
+        { author: "今夜航船", content: "欢迎，这里确实安静一些" },
+        { author: "给我留盏灯", content: "F站现在确实变味了", replies: [
+          { author: "小白菜难民", content: "唉，老资历真是老了", replyTo: "给我留盏灯" }
+        ] },
+        { author: "小小切是企鹅", content: "放心，这里可能会倒闭，但绝对不会变质" }
+      ],
+      replyCount: 5,
+      viewCount: 320
     },
 
     /* post42 */
@@ -1309,7 +1297,7 @@
       ]
     },
 
-    /* post47 —— 本次修正：board 从“新手指南”改为“站务公告” */
+    /* post47 */
     post47: {
       id: 'post47',
       title: '【重要公告】社区停运及维护终止说明',
@@ -1589,7 +1577,13 @@
     'post24'
   ];
 
-  /* ---------- 各版块的帖子列表 ---------- */
+  /* ---------- 各版块的帖子列表 ----------
+     说明：
+       - board-screenshot（闲谈茶馆）新增 post41（本次补入）
+       - post5 仍然保留在 threadsByBoard 中，由 js/forum.js 在
+         applyThreadFilter 阶段统一剔除，保证 post5 不出现在
+         子版块列表中，但仍可被搜索命中
+  ---------------------------------------------------- */
   var threadsByBoard = {
     'board-admin': [
       { id: 'post47', title: '【重要公告】社区停运及维护终止说明', tag: '公告', author: '给力GAME管理组', replies: 3, views: 120, lastAuthor: '高压锅一个吧', lastDate: '2025-01-01' },
@@ -1630,6 +1624,7 @@
       { id: 'post5', title: '这好像是某个游戏的制作人，太惨了吧。。', tag: '分享', author: '睡不醒呀910', replies: 7, views: 486, lastAuthor: '睡不醒呀910', lastDate: '2024-09-21' },
       { id: 'post24', title: '【讨论】今天食堂的饭好难吃', tag: '分享', author: '比格嗷呜啊', replies: 5, views: 620, lastAuthor: '比格嗷呜啊', lastDate: '2023-08-01' },
       { id: 'post43', title: '【分享】翻出了小时候玩的游戏机，还能开机', tag: '分享', author: '第①考古学家', replies: 5, views: 820, lastAuthor: '第①考古学家', lastDate: '2022-06-20' },
+      { id: 'post41', title: '大家好，我是从FGA来的', tag: '分享', author: '小白菜难民', replies: 5, views: 320, lastAuthor: '小白菜难民', lastDate: '2022-05-15' },
       { id: 'post17', title: '【分享】总会被这种剧情骗走眼泪', tag: '分享', author: '我心如铁', replies: 8, views: 720, lastAuthor: '我心如铁', lastDate: '2022-04-15' },
       { id: 'post38', title: '【讨论】有些游戏评论区真的没法看', tag: '分享', author: '你是不是油饼', replies: 4, views: 720, lastAuthor: '你是不是油饼', lastDate: '2021-12-20' },
       { id: 'post35', title: '【讨论】现在的游戏越来越贵了，玩不起了', tag: '分享', author: '无敌吴迪', replies: 24, views: 1680, lastAuthor: '无敌吴迪', lastDate: '2021-09-22' },

@@ -1,11 +1,11 @@
-/* js/forum.js */
 /* ============================================================
    文件路径：js/forum.js
    说明：给力GAME交流站逻辑
          本次修正：
-           1. “我的发帖”入口需登录后可访问（未登录弹 alert 并返回）
-           2. 新增 toHalfWidth：登录账号 / 密保答案校验前做全角转半角
-           3. 其余逻辑保持不变
+           1. applyThreadFilter 中统一剔除 post5，
+              防止 post5（车祸新闻）出现在子版块列表中；
+              post5 仍然可以通过搜索命中
+           2. 其余逻辑保持不变
    依赖：js/state.js（window.GameState）
          data/searchData.js（window.SearchData）
    ============================================================ */
@@ -83,25 +83,6 @@
   var post56Decoded = false;
   var post56Active = false;
   var garbledCache = new WeakMap();
-
-  /* ============================================================
-     全角转半角工具
-     ============================================================ */
-  function toHalfWidth(str) {
-    if (!str) return '';
-    var result = '';
-    for (var i = 0; i < str.length; i++) {
-      var code = str.charCodeAt(i);
-      if (code >= 0xFF01 && code <= 0xFF5E) {
-        result += String.fromCharCode(code - 0xFEE0);
-      } else if (code === 0x3000) {
-        result += ' ';
-      } else {
-        result += str.charAt(i);
-      }
-    }
-    return result;
-  }
 
   function getDynamicDate() {
     var now = new Date();
@@ -951,6 +932,9 @@
 
     currentThreadsFiltered = [];
     for (var i = 0; i < threads.length; i++) {
+      /* 修正：post5 为主线关键线索，只能通过搜索命中，
+         不允许出现在任何子版块默认列表中 */
+      if (threads[i].id === 'post5') continue;
       if (!filter || filter === '全部' || threads[i].tag === filter) {
         currentThreadsFiltered.push(threads[i]);
       }
@@ -1572,9 +1556,8 @@
   }
 
   function handleSecuritySubmit() {
-    /* 关键：全角转半角，避免输入法导致账号/答案校验失败 */
-    var account = toHalfWidth(usernameInput.value).trim();
-    var answer = toHalfWidth(securityAnswerInput.value);
+    var account = usernameInput.value.trim();
+    var answer = securityAnswerInput.value;
 
     if (account === '') { loginMessage.textContent = '请先填写账号'; return; }
     if (account !== FORUM_ACCOUNT) { loginMessage.textContent = '账号不存在'; return; }
@@ -1772,7 +1755,6 @@
     if (navMyPostsLink) {
       navMyPostsLink.addEventListener('click', function (e) {
         e.preventDefault();
-        /* 需登录后才能进入“我的发帖” */
         if (!isLoggedIn()) {
           alert('请先登录');
           return;

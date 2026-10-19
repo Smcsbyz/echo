@@ -1,15 +1,11 @@
+/* css/chat.css */
 /* ============================================================
    文件路径：css/chat.css
    说明：聊天页专用样式（白绿色调，微信风格）
-         本次修正：
-           1. 新增 4 个结局覆盖层主题类
-              - .theme-bad       坏结局：黑底白字
-              - .theme-good      好结局：蓝白渐变底黑字
-              - .theme-rejected  “好结局？”：黑底白字
-              - .theme-true      彩蛋：黑红渐变白字
-           2. .ending-overlay 增加 background / color 过渡
-           3. .ending-text 颜色改为 inherit，由主题类控制
-           4. 彩蛋主题下让紫色正文继承主题色，最后一行标签保持紫色
+         本次更新：
+           1. 新增二次好友申请相关样式：
+              - .friend-btn.accept.disabled / [disabled]
+              - .friend-request-hint
    其余样式保持不变。
    ============================================================ */
 
@@ -356,6 +352,23 @@ body {
 
 .friend-btn.accept:hover { background: #43a047; border-color: #43a047; }
 
+/* ---------- 二次好友申请：同意按钮禁用状态 ---------- */
+.friend-btn.accept.disabled,
+.friend-btn.accept[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e0e0e0;
+  border-color: #e0e0e0;
+  color: #999999;
+}
+
+.friend-btn.accept.disabled:hover,
+.friend-btn.accept[disabled]:hover {
+  background: #e0e0e0;
+  border-color: #e0e0e0;
+  color: #999999;
+}
+
 .friend-btn.reject {
   color: #666666;
   background: #ffffff;
@@ -366,6 +379,15 @@ body {
   background: #e8f5e9;
   border-color: #4caf50;
   color: #333333;
+}
+
+/* ---------- 二次好友申请：提示文字 ---------- */
+.friend-request-hint {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #999999;
+  letter-spacing: 1px;
 }
 
 /* ============================================================

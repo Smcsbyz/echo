@@ -1,16 +1,13 @@
+/* js/chat.js */
 /* ============================================================
    文件路径：js/chat.js
    说明：微信式私聊页逻辑（基于节点的对话系统）
          本次修正：
-           1. 统一头像获取入口 getContactAvatar(name)：
-              - 锚定头像（如果那片云 / WW邮箱提醒 / 我 / ？？？）
-              - 普通联系人按名字哈希，同一个名字永远返回同一张头像
-           2. 侧栏联系人列表与右侧消息气泡全部走 getContactAvatar，
-              不再出现"侧栏一个头像、对话另一个头像"的不一致问题
-           3. 其他联系人（AAA甲方老大 / 侦探の游戏小窝 / 未来名导演张伟等）
-              的消息气泡统一使用"当前联系人名"取头像，
-              避免因为消息里 speaker 与联系人名不同导致头像不一致
-           4. 保留 goodEndingOverlayPlayed 相关逻辑
+           1. 新增 checkAndUnlockTrueEnding 公共函数，统一处理
+              「坏结局 + 好结局 + 拒绝结局」全部触发后解锁彩蛋联系人
+           2. handleIfButton、closeImageModal、init 统一调用该函数
+           3. 修复刷新页面后可能出现的死档问题
+           4. 保留二次好友申请机制
    依赖：js/state.js（提供 window.GameState、window.AudioManager）
    ============================================================ */
 (function () {
@@ -40,9 +37,6 @@
   var AVATAR_ROBOT = AVATAR_BASE + 'avatar45.png';
   var AVATAR_ME = AVATAR_BASE + 'avatar46.png';
 
-  /* 锚定头像编号：41(？？？) 42(关关子君) 43(邮箱) 44(许阳) 45(如果那片云) 46(我) */
-  var RESERVED_AVATAR_INDEXES = { 41: true, 42: true, 43: true, 44: true, 45: true, 46: true };
-
   var APPEAR_INTERVAL = 2000;
   var TYPING_DURATION = 2500;
 
@@ -65,36 +59,6 @@
   var REASON_REPLY_DELAY_MS = 2500;
   var TRANSITION_START_DELAY_MS = 2500;
   var FINAL_OVERLAY_DELAY_MS = 2500;
-
-  /* ============================================================
-     统一头像获取入口
-     - 锚定头像优先
-     - 普通联系人按名字哈希，名字相同 → 头像相同
-     - 跳过 41~46 这六个保留编号
-     ============================================================ */
-  function getContactAvatar(name) {
-    var str = (name === null || name === undefined) ? '' : String(name);
-
-    /* 锚定头像 */
-    if (str === ROBOT_NAME || str === '如果那片云') return AVATAR_ROBOT;
-    if (str === EMAIL_CONTACT_NAME || str === 'WW邮箱提醒') return AVATAR_EMAIL;
-    if (str === SPEAKER_ME || str === '我') return AVATAR_ME;
-    if (str === MYSTERY_CONTACT_NAME || str === '？？？') return MYSTERY_AVATAR;
-
-    /* 普通联系人：按名字哈希到 1~50 且跳过保留编号的池子 */
-    var pool = [];
-    for (var i = 1; i <= 50; i++) {
-      if (RESERVED_AVATAR_INDEXES[i]) continue;
-      pool.push(i);
-    }
-
-    var hash = 0;
-    for (var j = 0; j < str.length; j++) {
-      hash = (hash * 31 + str.charCodeAt(j)) % 100000;
-    }
-    var index = pool[Math.abs(hash) % pool.length];
-    return AVATAR_BASE + 'avatar' + index + '.png';
-  }
 
   /* ============================================================
      真结局文本
@@ -281,7 +245,7 @@
   ];
 
   /* ============================================================
-     头像工具（基于统一入口 getContactAvatar）
+     头像工具
      ============================================================ */
   function applyAvatarLoading(el) {
     if (!el) return;
@@ -308,22 +272,40 @@
     el.style.color = '';
   }
 
-  /* 创建消息气泡头像：
-     - isMe 为 true 时使用 getContactAvatar('我')
-     - 否则优先使用 contactName，若没有则退回 speaker
-     这样能保证"同一个人物在所有位置都使用同一张头像" */
-  function createMessageAvatar(isMe, speaker, contactName) {
+  function getRandomContactAvatar(name) {
+    name = String(name || '?');
+    var pool = [];
+    for (var i = 1; i <= 40; i++) pool.push(i);
+    for (var j = 47; j <= 50; j++) pool.push(j);
+    var hash = 0;
+    for (var k = 0; k < name.length; k++) {
+      hash = (hash * 31 + name.charCodeAt(k)) % 100000;
+    }
+    var idx = Math.abs(hash) % pool.length;
+    return AVATAR_BASE + 'avatar' + pool[idx] + '.png';
+  }
+
+  function getContactAvatarPath(name) {
+    for (var i = 0; i < CONTACTS.length; i++) {
+      if (CONTACTS[i].name === name && CONTACTS[i].avatar) {
+        return CONTACTS[i].avatar;
+      }
+    }
+    return getRandomContactAvatar(name);
+  }
+
+  function createMessageAvatar(isMe, speaker) {
     var avatar = document.createElement('div');
     avatar.className = 'msg-avatar';
     applyAvatarLoading(avatar);
 
-    var src;
+    var src = null;
     if (isMe) {
-      src = getContactAvatar('我');
-    } else if (contactName) {
-      src = getContactAvatar(contactName);
-    } else {
-      src = getContactAvatar(speaker);
+      src = AVATAR_ME;
+    } else if (speaker === ROBOT_NAME) {
+      src = AVATAR_ROBOT;
+    } else if (speaker) {
+      src = getContactAvatarPath(speaker);
     }
 
     if (src) {
@@ -358,7 +340,7 @@
     el.style.padding = '0';
 
     var img = document.createElement('img');
-    img.src = getContactAvatar('我');
+    img.src = AVATAR_ME;
     img.alt = '';
     img.className = 'sidebar-avatar-img';
     img.onload = function () {
@@ -379,6 +361,7 @@
       id: 'yyyy',
       name: ROBOT_NAME,
       avatarColor: '#b39ddb',
+      avatar: AVATAR_ROBOT,
       preview: '你查到了什么吗？',
       unread: 0,
       requiresFriendRequest: true,
@@ -388,6 +371,7 @@
       id: 'daigan',
       name: '侦探の游戏小窝',
       avatarColor: '#7a8a9a',
+      avatar: null,
       preview: '（豆橛子抽你.jpg）',
       unread: 0,
       requiresFriendRequest: false,
@@ -397,6 +381,7 @@
       id: 'zhangsan',
       name: 'AAA甲方老大',
       avatarColor: '#7a9a8a',
+      avatar: null,
       preview: '明白，有情况随时说',
       unread: 0,
       requiresFriendRequest: false,
@@ -406,6 +391,7 @@
       id: 'lisi',
       name: '未来名导演张伟',
       avatarColor: '#9a8a7a',
+      avatar: null,
       preview: '没错，这就是蒙太奇的魔力',
       unread: 0,
       requiresFriendRequest: false,
@@ -415,6 +401,7 @@
       id: EMAIL_CONTACT_ID,
       name: EMAIL_CONTACT_NAME,
       avatarColor: '#888888',
+      avatar: AVATAR_EMAIL,
       preview: '邮箱绑定成功',
       unread: 0,
       requiresFriendRequest: false,
@@ -763,6 +750,103 @@
     }
   }
 
+  /* ============================================================
+     彩蛋解锁统一检查
+     ============================================================ */
+  function checkAndUnlockTrueEnding() {
+    var state = window.GameState.get();
+    if (state.badEndingSeen === true &&
+        state.goodEndingSeen === true &&
+        state.rejectedEndingSeen === true &&
+        state.trueEndingTriggered !== true &&
+        state.trueEndingContactUnlocked !== true) {
+      window.GameState.update({ trueEndingContactUnlocked: true });
+      showTrueEndingContact();
+    }
+  }
+
+  /* ============================================================
+     好友申请状态判定
+     ============================================================ */
+  function isInitialFriendRequestActive() {
+    var state = window.GameState.get();
+    return state.friendRequestAccepted !== true &&
+           state.rejectedFriendRequest !== true;
+  }
+
+  function isSecondaryFriendRequestActive() {
+    var state = window.GameState.get();
+    return state.friendRequestAccepted === true &&
+           state.goodEndingSeen === true &&
+           state.rejectedEndingSeen !== true;
+  }
+
+  /* ============================================================
+     好友申请视图渲染
+     ============================================================ */
+  function renderFriendRequestList() {
+    var list = document.querySelector('.friend-request-list');
+    if (!list) return;
+
+    if (isSecondaryFriendRequestActive()) {
+      list.innerHTML =
+        '<div class="friend-request-item">' +
+          '<div class="contact-avatar" style="background:#b39ddb;">云</div>' +
+          '<div class="friend-request-body">' +
+            '<div class="friend-request-name">如果那片云</div>' +
+            '<div class="friend-request-text">UPUP，我这里有个很好的视频素材，要不要看看</div>' +
+          '</div>' +
+          '<div class="friend-request-actions">' +
+            '<button class="friend-btn accept disabled" type="button" disabled>已添加</button>' +
+            '<button class="friend-btn reject secondary-reject" type="button">拒绝</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="friend-request-hint">你们已经是好友了。</div>';
+
+      var rejectBtn = list.querySelector('.secondary-reject');
+      if (rejectBtn) {
+        rejectBtn.addEventListener('click', handleSecondaryRejectFriend);
+      }
+    } else if (isInitialFriendRequestActive()) {
+      list.innerHTML =
+        '<div class="friend-request-item">' +
+          '<div class="contact-avatar" style="background:#b39ddb;">云</div>' +
+          '<div class="friend-request-body">' +
+            '<div class="friend-request-name">如果那片云</div>' +
+            '<div class="friend-request-text">UPUP，我这里有个很好的视频素材，要不要看看</div>' +
+          '</div>' +
+          '<div class="friend-request-actions">' +
+            '<button class="friend-btn accept initial-accept" type="button">同意</button>' +
+            '<button class="friend-btn reject initial-reject" type="button">拒绝</button>' +
+          '</div>' +
+        '</div>';
+
+      var acceptBtn = list.querySelector('.initial-accept');
+      var rejectBtn2 = list.querySelector('.initial-reject');
+      if (acceptBtn) acceptBtn.addEventListener('click', handleAcceptFriend);
+      if (rejectBtn2) rejectBtn2.addEventListener('click', handleRejectFriend);
+    } else {
+      list.innerHTML = '<div class="friend-request-empty">暂无新的好友申请</div>';
+    }
+  }
+
+  /* ============================================================
+     二次拒绝处理
+     ============================================================ */
+  function handleSecondaryRejectFriend() {
+    window.GameState.update({ rejectedEndingSeen: true });
+    logStateUpdate();
+
+    var friendRequestList = document.querySelector('.friend-request-list');
+    if (friendRequestList) {
+      friendRequestList.innerHTML = '<div class="friend-request-empty">暂无新的好友申请</div>';
+    }
+
+    updateFriendRequestDot();
+    renderContactList();
+    showEndingOverlay('question', false);
+  }
+
   var chatProgress = 0;
   var questionProgress = 0;
   var chatSelectedOptions = {};
@@ -788,10 +872,11 @@
 
   function updateFriendRequestDot() {
     if (!friendRequestDot) return;
-    var state = window.GameState.get();
-    var accepted = state.friendRequestAccepted === true;
-    var rejected = state.rejectedFriendRequest === true;
-    friendRequestDot.hidden = accepted || rejected;
+    if (isInitialFriendRequestActive() || isSecondaryFriendRequestActive()) {
+      friendRequestDot.hidden = false;
+    } else {
+      friendRequestDot.hidden = true;
+    }
   }
 
   function buildMysteryContactItem(currentChat) {
@@ -806,7 +891,7 @@
     applyAvatarLoading(avatar);
 
     var img = document.createElement('img');
-    img.src = getContactAvatar(MYSTERY_CONTACT_NAME);
+    img.src = MYSTERY_AVATAR;
     img.alt = '';
     img.style.width = '100%';
     img.style.height = '100%';
@@ -884,8 +969,7 @@
         avatar.className = 'contact-avatar';
         applyAvatarLoading(avatar);
 
-        /* 统一走 getContactAvatar：同一个名字永远返回同一张头像 */
-        var avatarSrc = getContactAvatar(c.name);
+        var avatarSrc = c.avatar || getContactAvatarPath(c.name);
         if (avatarSrc) {
           avatar.style.overflow = 'hidden';
           avatar.style.padding = '0';
@@ -1019,8 +1103,7 @@
       var row = document.createElement('div');
       row.className = 'msg-row ' + (isMe ? 'me' : 'them');
 
-      /* 消息头像统一用"当前联系人名"取，避免消息里 speaker 与联系人名不同导致不一致 */
-      var avatar = createMessageAvatar(isMe, m.speaker, isMe ? null : name);
+      var avatar = createMessageAvatar(isMe, m.speaker);
 
       var wrap = document.createElement('div');
       wrap.className = 'msg-wrap';
@@ -1129,28 +1212,11 @@
   function closeImageModal() {
     if (!imageModal) return;
     imageModal.hidden = true;
-
-    var state = window.GameState.get();
-    if (state.badEndingSeen === true &&
-        state.goodEndingSeen === true &&
-        state.rejectedEndingSeen === true &&
-        state.trueEndingTriggered !== true &&
-        state.trueEndingContactUnlocked !== true) {
-      window.GameState.update({ trueEndingContactUnlocked: true });
-      showTrueEndingContact();
-    }
+    checkAndUnlockTrueEnding();
   }
 
   function handleFriendRequestBtnClick() {
-    var state = window.GameState.get();
-    var friendRequestList = document.querySelector('.friend-request-list');
-
-    if (state.friendRequestAccepted === true || state.rejectedFriendRequest === true) {
-      if (friendRequestList) {
-        friendRequestList.innerHTML = '<div class="friend-request-empty">暂无新的好友申请</div>';
-      }
-    }
-
+    renderFriendRequestList();
     showView('friendRequest');
   }
 
@@ -1174,10 +1240,7 @@
     window.GameState.update(update);
     logStateUpdate();
 
-    var friendRequestList = document.querySelector('.friend-request-list');
-    if (friendRequestList) {
-      friendRequestList.innerHTML = '<div class="friend-request-empty">暂无新的好友申请</div>';
-    }
+    renderFriendRequestList();
 
     showView('main');
     if (mainChatTitle) mainChatTitle.textContent = MAIN_CHAT_NAME;
@@ -1195,10 +1258,7 @@
     });
     logStateUpdate();
 
-    var friendRequestList = document.querySelector('.friend-request-list');
-    if (friendRequestList) {
-      friendRequestList.innerHTML = '<div class="friend-request-empty">暂无新的好友申请</div>';
-    }
+    renderFriendRequestList();
 
     updateFriendRequestDot();
     showEndingOverlay('question', false);
@@ -1245,7 +1305,6 @@
     row.className = 'msg-row ' + (isMe ? 'me' : 'them');
     if (animate) row.classList.add('message-appear');
 
-    /* 主聊天只有"我"与 ROBOT_NAME 两位说话者，getContactAvatar 内部会锚定 */
     var avatar = createMessageAvatar(isMe, speaker);
 
     var wrap = document.createElement('div');
@@ -1642,7 +1701,12 @@
 
     if (context === 'question') {
       window.GameState.update({ rejectedFriendRequest: false });
+
+      /* 调用公共解锁检查（修复：先检查，再切视图） */
+      checkAndUnlockTrueEnding();
+
       showView('friendRequest');
+      renderFriendRequestList();
       renderContactList();
       return;
     }
@@ -1650,12 +1714,13 @@
     window.GameState.update({ endingChoice: null });
     logStateUpdate();
 
-    var state = window.GameState.get();
-    if (state.friendRequestAccepted === true) {
+    var state2 = window.GameState.get();
+    if (state2.friendRequestAccepted === true) {
       showView('main');
       if (mainChatTitle) mainChatTitle.textContent = MAIN_CHAT_NAME;
     } else {
       showView('friendRequest');
+      renderFriendRequestList();
     }
 
     renderContactList();
@@ -2035,34 +2100,8 @@
   }
 
   function updateFriendRequestUI() {
-    var nameEl = document.querySelector('.friend-request-name');
-    if (nameEl) nameEl.textContent = ROBOT_NAME;
-
-    var textEl = document.querySelector('.friend-request-text');
-    if (textEl) textEl.textContent = 'UPUP，我这里有个很好的视频素材，要不要看看';
-
-    var avatarEl = document.querySelector('.friend-request-item .contact-avatar');
-    if (avatarEl) {
-      applyAvatarLoading(avatarEl);
-      avatarEl.style.overflow = 'hidden';
-      avatarEl.style.padding = '0';
-
-      var img = document.createElement('img');
-      img.src = getContactAvatar(ROBOT_NAME);
-      img.alt = '';
-      img.style.width = '100%';
-      img.style.height = '100%';
-      img.style.objectFit = 'cover';
-      img.style.display = 'block';
-      img.onload = function () {
-        clearAvatarLoading(avatarEl);
-      };
-      img.onerror = function () {
-        img.style.display = 'none';
-        setAvatarColorOnly(avatarEl);
-      };
-      avatarEl.appendChild(img);
-    }
+    /* 静态 HTML 中的申请项已由 renderFriendRequestList 统一接管，
+       此函数仅用于初始化时占位，不再直接修改 DOM。 */
   }
 
   function initInitialView() {
@@ -2070,7 +2109,6 @@
 
     var accepted = state.friendRequestAccepted === true;
 
-    updateFriendRequestUI();
     syncFromState();
 
     if (state.goodEndingSeen && state.currentChat === EMAIL_CONTACT_ID) {
@@ -2091,6 +2129,7 @@
         window.GameState.update({ rejectedFriendRequest: false });
       }
       showView('friendRequest');
+      renderFriendRequestList();
       return;
     }
 
@@ -2392,7 +2431,7 @@
     avatar.className = 'msg-avatar';
     applyAvatarLoading(avatar);
 
-    var src = isMe ? getContactAvatar('我') : getContactAvatar(MYSTERY_CONTACT_NAME);
+    var src = isMe ? AVATAR_ME : MYSTERY_AVATAR;
 
     var img = document.createElement('img');
     img.src = src;
@@ -2443,7 +2482,7 @@
     applyAvatarLoading(avatar);
 
     var img = document.createElement('img');
-    img.src = getContactAvatar(MYSTERY_CONTACT_NAME);
+    img.src = MYSTERY_AVATAR;
     img.alt = '';
     img.style.width = '100%';
     img.style.height = '100%';
@@ -2492,6 +2531,9 @@
      启动
      ============================================================ */
   function init() {
+    /* 修复：刷新页面后先行检查一次，避免死档 */
+    checkAndUnlockTrueEnding();
+
     if (window.AudioManager && typeof window.AudioManager.init === 'function') {
       window.AudioManager.init();
     }
@@ -2619,6 +2661,7 @@
       (function (field) {
         window.onGameStateFieldChange(field, function () {
           renderContactList();
+          updateFriendRequestDot();
         });
       })(endingFlagFields[fi]);
     }

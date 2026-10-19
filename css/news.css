@@ -1,0 +1,436 @@
+/* ============================================================
+   文件路径：css/news.css
+   说明：仿新闻门户样式（今日快讯）
+         配色：白色背景 + 深蓝导航栏
+         更新：侧边栏广告位改为图片显示（news-side.png）
+         更新：广告图片使用 cover 填满容器，居中裁剪
+   ============================================================ */
+
+/* ---------- 页面基础 ---------- */
+body.news-body {
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #333333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  min-width: 1024px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   顶部导航栏
+   ============================================================ */
+.news-nav {
+  background: #1a3a6b;
+  color: #ffffff;
+  height: 56px;
+}
+
+.news-nav-inner {
+  max-width: 1100px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  box-sizing: border-box;
+}
+
+.news-logo {
+  flex: 0 0 auto;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #ffffff;
+}
+
+.news-nav-links {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.news-nav-link {
+  font-size: 15px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color .15s ease;
+}
+
+.news-nav-link:hover {
+  color: #ffd166;
+  text-decoration: underline;
+}
+
+.news-nav-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.news-nav-split {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================================
+   面包屑
+   ============================================================ */
+.news-breadcrumb {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 20px 6px;
+  font-size: 13px;
+  color: #888888;
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   主体布局
+   ============================================================ */
+.news-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 10px 20px 40px;
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  box-sizing: border-box;
+}
+
+/* ---------- 左侧：文章 ---------- */
+.news-main {
+  flex: 1 1 70%;
+  min-width: 0;
+}
+
+/* 文章通用 */
+.news-article {
+  background: #ffffff;
+}
+
+.news-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #222222;
+}
+
+.news-subtitle {
+  margin: 0 0 14px;
+  font-size: 16px;
+  color: #666666;
+  line-height: 1.6;
+}
+
+.news-meta {
+  padding: 8px 0;
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 13px;
+  color: #999999;
+  border-bottom: 1px solid #e8e8e8;
+  border-top: 1px solid #e8e8e8;
+}
+
+.news-content p {
+  margin: 0 0 18px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333333;
+  text-indent: 2em;
+}
+
+.news-content strong {
+  color: #222222;
+  font-weight: 700;
+}
+
+/* ---------- 富文本：蓝色斜体（不可点击） ---------- */
+.news-content em,
+.news-content .news-em {
+  color: #1a3a6b;
+  font-style: italic;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 文章底部 */
+.news-footer {
+  margin-top: 24px;
+  padding-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  color: #888888;
+  border-top: 1px dashed #e0e0e0;
+}
+
+.news-related-link {
+  color: #1a3a6b;
+  text-decoration: underline;
+  transition: color .15s ease;
+}
+
+.news-related-link:hover {
+  color: #c0392b;
+}
+
+/* ============================================================
+   评论区
+   ============================================================ */
+.news-comments {
+  margin-top: 32px;
+  padding: 20px;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.comments-title {
+  margin: 0 0 14px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222222;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.comment-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comment-item {
+  padding: 12px 14px;
+  background: #ffffff;
+  border-bottom: 1px solid #ebebeb;
+  border-radius: 4px;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: #999999;
+  margin-bottom: 4px;
+}
+
+.comment-user {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a3a6b;
+}
+
+.comment-time {
+  font-size: 12px;
+  color: #b0b0b0;
+}
+
+.comment-content {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #333333;
+}
+
+.comment-actions {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #888888;
+}
+
+.comment-like {
+  color: #999999;
+  cursor: default;
+}
+
+/* 评论输入区 */
+.comment-form {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.comment-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #333333;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color .15s ease;
+}
+
+.comment-input:focus {
+  border-color: #1a3a6b;
+}
+
+.comment-btn {
+  flex: 0 0 auto;
+  padding: 10px 22px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #1a3a6b;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+
+.comment-btn:hover {
+  background: #275089;
+}
+
+.comment-btn:active {
+  background: #14304f;
+}
+
+/* ============================================================
+   右侧：侧边栏
+   ============================================================ */
+.news-sidebar {
+  flex: 0 0 30%;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidebar-block {
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.sidebar-title {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #1a3a6b;
+  letter-spacing: 1px;
+}
+
+.hot-list {
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+}
+
+.hot-item {
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.hot-item:last-child {
+  border-bottom: none;
+}
+
+.hot-link {
+  color: #333333;
+  text-decoration: none;
+  transition: color .15s ease;
+}
+
+.hot-link:hover {
+  color: #c0392b;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   广告位（图片显示）
+   - 支持 .ad-placeholder 与 .news-ad 两种类名
+   - 背景图片：assets/ads/news-side.png
+   - 使用 background-size: cover 填满容器，居中裁剪
+   - 明确宽高：300 × 320
+   ============================================================ */
+.ad-placeholder,
+.news-ad {
+  width: 300px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  letter-spacing: 0;
+  color: transparent;
+  background-color: #1a3a6b;
+  background-image: url('../assets/ads/news-side.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 6px;
+}
+
+.news-ad {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #1a3a6b;
+  background-image: url('../assets/ads/news-side.png');
+}
+
+/* ============================================================
+   底部
+   ============================================================ */
+.news-footer-bar {
+  padding: 20px 0 30px;
+  text-align: center;
+  font-size: 12px;
+  color: #999999;
+  border-top: 1px solid #ebebeb;
+  margin-top: 20px;
+}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+@media (max-width: 1024px) {
+  .news-container {
+    flex-direction: column;
+  }
+
+  .news-sidebar {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .ad-placeholder,
+  .news-ad {
+    width: 100%;
+    max-width: 300px;
+  }
+}

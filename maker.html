@@ -1,0 +1,188 @@
+<!-- maker.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>开发者日志 - 围博</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/maker.css">
+</head>
+<body class="maker-body production">
+
+  <header class="wb-topnav">
+    <div class="wb-topnav-inner">
+      <div class="wb-logo">
+        <div class="wb-logo-icon">围</div>
+        <div class="wb-logo-text">围博</div>
+      </div>
+
+      <div class="wb-search">
+        <input class="wb-search-input" type="text" placeholder="搜索围博" autocomplete="off">
+      </div>
+
+      <div class="wb-topnav-right">
+        <div class="wb-nav-icon" title="首页">首</div>
+        <div class="wb-nav-icon" title="视频">视</div>
+        <div class="wb-nav-icon" title="消息">消</div>
+        <div class="wb-nav-avatar" title="头像">阳</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wb-layout">
+
+    <aside class="wb-sidebar-left">
+      <div class="wb-sidebar-title">首页</div>
+      <ul class="wb-sidebar-list">
+        <li class="wb-sidebar-item active">全部关注</li>
+        <li class="wb-sidebar-item" data-placeholder="1">最新围博</li>
+        <li class="wb-sidebar-item" data-placeholder="1">特别关注</li>
+        <li class="wb-sidebar-item" data-placeholder="1">好友圈</li>
+      </ul>
+
+      <ul class="wb-sidebar-list wb-sidebar-list-split">
+        <li class="wb-sidebar-item" data-placeholder="1">动漫</li>
+        <li class="wb-sidebar-item" data-placeholder="1">游戏</li>
+        <li class="wb-sidebar-item" data-placeholder="1">名人明星</li>
+        <li class="wb-sidebar-item" data-placeholder="1">同事</li>
+        <li class="wb-sidebar-item" data-placeholder="1">同学</li>
+        <li class="wb-sidebar-item" data-placeholder="1">悄悄关注</li>
+      </ul>
+    </aside>
+
+    <main class="wb-main">
+
+      <div class="wb-cover">
+        <span>封面图占位</span>
+      </div>
+
+      <div class="wb-profile">
+        <div class="wb-avatar-wrap">
+          <div class="wb-avatar">阳</div>
+          <div class="wb-verified" title="认证"></div>
+        </div>
+
+        <div class="wb-profile-info">
+          <div class="wb-profile-top">
+            <h1 class="wb-nickname">种下一颗大太阳</h1>
+            <button class="wb-follow-btn" type="button" data-placeholder="1">关注</button>
+          </div>
+
+          <div class="wb-profile-stats">
+            <span class="wb-stat"><strong>1.2万</strong>粉丝</span>
+            <span class="wb-stat">
+              <a href="#" id="followingCountLink" class="wb-stat-link">
+                <strong>1</strong>关注
+              </a>
+            </span>
+            <span class="wb-stat"><strong>4.5万</strong>转评赞</span>
+          </div>
+
+          <div class="wb-bio">这里是《空屋谜踪》的开发账号。</div>
+
+          <div class="wb-tags">
+            <span class="wb-tag">游戏博主</span>
+            <span class="wb-tag">IP属地：未知</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="wb-tabs">
+        <span class="wb-tab" data-placeholder="1">精选</span>
+        <span class="wb-tab active">微博</span>
+        <span class="wb-tab" data-placeholder="1">视频</span>
+        <span class="wb-tab" data-placeholder="1">相册</span>
+        <span class="wb-tab" data-placeholder="1">文章</span>
+      </nav>
+
+      <div id="tweetFeed" class="wb-tweet-list"></div>
+      <p id="emptyTip" class="empty-tip" hidden>暂无内容</p>
+
+    </main>
+
+    <aside class="wb-sidebar-right">
+
+      <div class="wb-help-section">
+        <div class="wb-help-icon">助</div>
+        <div class="wb-help-text">为TA助威</div>
+      </div>
+
+      <div class="wb-recommend">
+        <div class="wb-recommend-header">
+          <span>关注推荐</span>
+          <span class="wb-recommend-page">1/7</span>
+        </div>
+        <ul class="wb-recommend-list">
+          <li class="wb-recommend-item">
+            <div class="wb-recommend-avatar" style="background:#4a7ca0;">夜</div>
+            <div class="wb-recommend-body">
+              <div class="wb-recommend-name">夜航的猫</div>
+              <div class="wb-recommend-desc">插画师</div>
+            </div>
+            <button class="wb-recommend-follow" type="button" data-placeholder="1">+关注</button>
+          </li>
+          <li class="wb-recommend-item">
+            <div class="wb-recommend-avatar" style="background:#a06a3a;">咖</div>
+            <div class="wb-recommend-body">
+              <div class="wb-recommend-name">咖啡与画</div>
+              <div class="wb-recommend-desc">游戏爱好者</div>
+            </div>
+            <button class="wb-recommend-follow" type="button" data-placeholder="1">+关注</button>
+          </li>
+          <li class="wb-recommend-item">
+            <div class="wb-recommend-avatar" style="background:#3a7a7a;">南</div>
+            <div class="wb-recommend-body">
+              <div class="wb-recommend-name">南山的风</div>
+              <div class="wb-recommend-desc">独立开发者</div>
+            </div>
+            <button class="wb-recommend-follow" type="button" data-placeholder="1">+关注</button>
+          </li>
+          <li class="wb-recommend-item">
+            <div class="wb-recommend-avatar" style="background:#7a5a9a;">白</div>
+            <div class="wb-recommend-body">
+              <div class="wb-recommend-name">白鹭不飞</div>
+              <div class="wb-recommend-desc">音乐人</div>
+            </div>
+            <button class="wb-recommend-follow" type="button" data-placeholder="1">+关注</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="wb-footer-links">
+        <a href="#" class="wb-footer-link" data-placeholder="1">帮助中心</a>
+        <a href="#" class="wb-footer-link" data-placeholder="1">合作&amp;服务</a>
+        <a href="#" class="wb-footer-link" data-placeholder="1">举报中心</a>
+        <a href="#" class="wb-footer-link" data-placeholder="1">关于围博</a>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <div id="followingModal" class="following-modal" hidden>
+    <div class="following-modal-overlay" id="followingModalOverlay"></div>
+    <div class="following-modal-panel" role="dialog" aria-modal="true" aria-labelledby="followingModalTitle">
+      <div class="following-modal-header">
+        <span id="followingModalTitle" class="following-modal-title">关注列表</span>
+        <button id="followingModalClose" class="following-modal-close" type="button">×</button>
+      </div>
+      <div class="following-modal-body">
+        <div class="following-item">
+          <div class="following-avatar">君</div>
+          <div class="following-info">
+            <div class="following-name">关关子君</div>
+            <div class="following-bio">记录一些日常。</div>
+          </div>
+          <a class="following-view-btn" href="weibo.html" target="_blank" rel="noopener noreferrer">查看</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="data/makerData.js"></script>
+  <script src="js/maker.js"></script>
+
+</body>
+</html>

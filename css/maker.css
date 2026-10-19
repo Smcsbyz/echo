@@ -1,0 +1,990 @@
+/* ============================================================
+   文件路径：css/maker.css
+   说明：开发者日志专用样式（三栏布局，仿围博橙白风格）
+         配色：背景 #f7f7f7 / 卡片 #ffffff / 边框 #e8e8e8
+               主文字 #333 / 次文字 #999 / 高亮 #ff8200
+         含“关注列表”弹窗样式
+         “1 关注”样式与“1.2万 粉丝”“4.5万 转评赞”保持一致：
+         数字“1”深色加粗、文字“关注”灰色带下划线，无悬停高亮
+         本次修正：
+           1. .wb-avatar 支持内部 <img> 头像显示（avatar44）
+           2. .following-avatar 支持内部 <img> 头像显示（avatar42）
+           3. 新增 .avatar-img 通用样式
+           4. 其余样式保持不变
+   ============================================================ */
+
+/* ---------- 页面基础 ---------- */
+body.maker-body {
+  margin: 0;
+  padding: 0;
+  background: #f7f7f7;
+  color: #333333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-width: 1024px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   顶部导航栏
+   ============================================================ */
+.wb-topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 56px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+.wb-topnav-inner {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.wb-logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wb-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #ff8200;
+}
+
+.wb-logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #333333;
+}
+
+.wb-search {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.wb-search-input {
+  width: 100%;
+  max-width: 400px;
+  height: 32px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #333333;
+  background: #f2f2f2;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  outline: none;
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.wb-search-input::placeholder {
+  color: #999999;
+}
+
+.wb-search-input:focus {
+  border-color: #ff8200;
+  background: #ffffff;
+}
+
+.wb-topnav-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wb-nav-icon,
+.wb-nav-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #666666;
+  background: #f2f2f2;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s ease, color .15s ease;
+}
+
+.wb-nav-icon:hover,
+.wb-nav-avatar:hover {
+  background: #ffe8cc;
+  color: #ff8200;
+}
+
+.wb-nav-avatar {
+  background: #ffe8cc;
+  color: #d96400;
+}
+
+/* ============================================================
+   三栏布局容器
+   ============================================================ */
+.wb-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px 40px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   左侧边栏
+   ============================================================ */
+.wb-sidebar-left {
+  flex: 0 0 200px;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-bottom: 8px;
+}
+
+.wb-sidebar-title {
+  padding: 12px 16px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #999999;
+  letter-spacing: 1px;
+}
+
+.wb-sidebar-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wb-sidebar-list-split {
+  border-top: 1px solid #e8e8e8;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.wb-sidebar-item {
+  position: relative;
+  padding: 9px 16px;
+  font-size: 14px;
+  color: #555555;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s ease, color .15s ease;
+}
+
+.wb-sidebar-item:hover {
+  background: #fff4e6;
+  color: #ff8200;
+}
+
+.wb-sidebar-item.active {
+  background: #fff2e0;
+  color: #ff8200;
+  font-weight: 600;
+}
+
+.wb-sidebar-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: #ff8200;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ============================================================
+   中间主内容区
+   ============================================================ */
+.wb-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   封面图区域（真实图片）
+   ============================================================ */
+.wb-cover,
+.maker-cover {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  letter-spacing: 4px;
+  color: #999999;
+  background-color: #ffe8cc;
+  background-image: url('../assets/covers/maker-cover.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+/* 隐藏原有占位文字 */
+.wb-cover > span,
+.maker-cover > span {
+  display: none;
+}
+
+.wb-profile {
+  padding: 0 20px 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.wb-avatar-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-bottom: 10px;
+}
+
+.wb-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffb370;
+  background: #4a3a2a;
+  border: 4px solid #ffffff;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* 通用头像图片（主资料卡 / 关注列表 / 推文等） */
+.avatar-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.wb-verified {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffb100;
+  border: 3px solid #ffffff;
+  box-sizing: border-box;
+}
+
+.wb-verified::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.wb-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wb-profile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wb-nickname {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #333333;
+  letter-spacing: 1px;
+}
+
+.wb-follow-btn {
+  padding: 6px 20px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #ff8200;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+
+.wb-follow-btn:hover {
+  background: #ffa040;
+}
+
+.wb-follow-btn:active {
+  background: #e57400;
+}
+
+/* ---------- 统计数据 ---------- */
+.wb-profile-stats {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: #999999;
+}
+
+/* 普通统计数字（“1.2万”“4.5万”）深色加粗 */
+.wb-stat strong {
+  color: #333333;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+/* 关注数可点击链接：
+   - “关注”文字使用与“粉丝”“转评赞”一致的灰色，并带灰色下划线
+   - 数字“1”通过 <strong> 覆盖为与“1.2万”“4.5万”相同的深色加粗
+   - 数字“1”使用 display: inline-block 阻止父元素下划线传递
+   - 鼠标悬停无任何变化（无颜色、背景、字重变化） */
+.wb-stat-link {
+  color: #999999;
+  text-decoration: underline;
+  text-decoration-color: #999999;
+  cursor: pointer;
+}
+
+.wb-stat-link strong {
+  display: inline-block;
+  color: #333333;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.wb-bio {
+  font-size: 14px;
+  color: #555555;
+}
+
+.wb-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wb-tag {
+  padding: 2px 10px;
+  font-size: 12px;
+  color: #d96400;
+  background: #fff2e0;
+  border: 1px solid #ffd0a0;
+  border-radius: 10px;
+}
+
+/* ---------- 标签页 ---------- */
+.wb-tabs {
+  display: flex;
+  padding: 0 20px;
+  border-bottom: 1px solid #e8e8e8;
+  gap: 24px;
+}
+
+.wb-tab {
+  position: relative;
+  padding: 14px 0;
+  font-size: 14px;
+  color: #999999;
+  cursor: pointer;
+  user-select: none;
+  transition: color .15s ease;
+}
+
+.wb-tab:hover {
+  color: #555555;
+}
+
+.wb-tab.active {
+  color: #333333;
+  font-weight: 600;
+}
+
+.wb-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #ff8200;
+  border-radius: 1px;
+}
+
+/* ============================================================
+   推文列表
+   ============================================================ */
+.wb-tweet-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.wb-tweet {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  transition: background .15s ease;
+}
+
+.wb-tweet:last-child {
+  border-bottom: none;
+}
+
+.wb-tweet:hover {
+  background: #fafafa;
+}
+
+.wb-tweet-avatar {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffb370;
+  background: #4a3a2a;
+  overflow: hidden;
+}
+
+.wb-tweet-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.wb-tweet-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.wb-tweet-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #d96400;
+}
+
+.wb-tweet-date {
+  font-size: 12px;
+  color: #999999;
+}
+
+.wb-tweet-from {
+  font-size: 12px;
+  color: #999999;
+}
+
+.wb-tweet-text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #333333;
+  word-break: break-word;
+  white-space: pre-wrap;
+  margin-bottom: 8px;
+}
+
+.wb-tweet-actions {
+  display: flex;
+  gap: 40px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #999999;
+}
+
+.wb-tweet-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 13px;
+  color: #999999;
+  transition: color .15s ease;
+}
+
+.wb-tweet-action:hover {
+  color: #ff8200;
+}
+
+.wb-tweet-action.active {
+  color: #ff8200;
+  font-weight: 600;
+}
+
+.wb-tweet-action-icon {
+  display: inline-block;
+  font-size: 14px;
+}
+
+/* ---------- 点赞者区域（仅展示，不再可点击） ---------- */
+.tweet-liker {
+  margin-top: 10px;
+  padding-top: 8px;
+  font-size: 12.5px;
+  color: #999999;
+  line-height: 1.9;
+  border-top: 1px solid #f2f2f2;
+}
+
+.liker-name {
+  color: #666666;
+}
+
+.liker-text {
+  color: #999999;
+}
+
+/* ---------- 评论区 ---------- */
+.comment-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px solid #f2f2f2;
+}
+
+.comment-empty {
+  font-size: 12px;
+  color: #b3b3b3;
+}
+
+.comment-item {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #333333;
+  word-break: break-word;
+}
+
+.comment-owner {
+  color: #d96400;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.comment-text {
+  color: #333333;
+}
+
+/* ---------- 评论输入区域 ---------- */
+.comment-input-area {
+  margin-top: 10px;
+}
+
+.comment-form {
+  display: flex;
+  gap: 10px;
+}
+
+.comment-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 7px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #333333;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  outline: none;
+}
+
+.comment-input:focus {
+  border-color: #ff8200;
+}
+
+.comment-input::placeholder {
+  color: #b3b3b3;
+}
+
+.comment-post-btn {
+  padding: 6px 16px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #ff8200;
+  border: 1px solid #ff8200;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+
+.comment-post-btn:hover {
+  background: #ffa040;
+  border-color: #ffa040;
+}
+
+/* ---------- 空状态提示 ---------- */
+.empty-tip {
+  margin: 40px 20px;
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #999999;
+  background: #fafafa;
+  border: 1px dashed #e8e8e8;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   右侧边栏
+   ============================================================ */
+.wb-sidebar-right {
+  flex: 0 0 280px;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-bottom: 16px;
+}
+
+.wb-help-section {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.wb-help-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #ff8200;
+}
+
+.wb-help-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.wb-recommend {
+  padding: 16px 0 8px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.wb-recommend-header {
+  padding: 0 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.wb-recommend-page {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999999;
+}
+
+.wb-recommend-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wb-recommend-item {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .15s ease;
+}
+
+.wb-recommend-item:hover {
+  background: #fff4e6;
+}
+
+.wb-recommend-avatar {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.wb-recommend-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.wb-recommend-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-recommend-desc {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #999999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-recommend-follow {
+  flex: 0 0 auto;
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #ff8200;
+  background: transparent;
+  border: 1px solid #ff8200;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+
+.wb-recommend-follow:hover {
+  background: #ff8200;
+  color: #ffffff;
+}
+
+.wb-footer-links {
+  padding: 14px 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  font-size: 12px;
+}
+
+.wb-footer-link {
+  color: #999999;
+  text-decoration: none;
+  transition: color .15s ease;
+}
+
+.wb-footer-link:hover {
+  color: #ff8200;
+}
+
+/* ============================================================
+   关注列表弹窗
+   ============================================================ */
+.following-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.following-modal[hidden] {
+  display: none !important;
+}
+
+.following-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.following-modal-panel {
+  position: relative;
+  z-index: 1;
+  width: 400px;
+  max-width: 90%;
+  max-height: 500px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .35);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.following-modal-header {
+  flex: 0 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.following-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333333;
+}
+
+.following-modal-close {
+  width: 28px;
+  height: 28px;
+  font-size: 20px;
+  line-height: 1;
+  color: #999999;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color .15s ease;
+}
+
+.following-modal-close:hover {
+  color: #ff8200;
+}
+
+.following-modal-body {
+  flex: 1 1 auto;
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.following-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  transition: background .15s ease;
+}
+
+.following-item:hover {
+  background: #fff4e6;
+}
+
+/* 关注列表弹窗头像：支持内部 <img> */
+.following-avatar {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffb370;
+  background: #4a3a2a;
+  overflow: hidden;
+  padding: 0;
+}
+
+.following-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.following-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 2px;
+}
+
+.following-bio {
+  font-size: 12px;
+  color: #999999;
+}
+
+.following-view-btn {
+  flex: 0 0 auto;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #ff8200;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background .15s ease;
+}
+
+.following-view-btn:hover {
+  background: #ffa040;
+}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+
+@media (max-width: 1200px) {
+  .wb-sidebar-right {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .wb-sidebar-left {
+    display: none;
+  }
+}

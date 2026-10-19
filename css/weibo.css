@@ -1,0 +1,872 @@
+/* ============================================================
+   文件路径：css/weibo.css
+   说明：围博电脑版橙白风格（三栏布局）
+         配色：背景 #f7f7f7 / 卡片 #ffffff / 边框 #e8e8e8
+               主文字 #333 / 次文字 #999 / 高亮 #ff8200
+         含：密码保护弹窗 / “为什么”掉落特效画布 / 封面图
+         本次修正：
+           1. 新增 .tweet-image-wrap / .tweet-image / .tweet-image-placeholder
+              （用于真实 <img> 显示鸢尾花图片）
+           2. 保留 .wb-tweet-image-placeholder 作为向后兼容
+           3. 其余样式保持不变
+   ============================================================ */
+
+/* ---------- 页面基础 ---------- */
+body.weibo-body {
+  margin: 0;
+  padding: 0;
+  background: #f7f7f7;
+  color: #333333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-width: 1024px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- 页面主体包裹层（用于模糊化） ---------- */
+.weibo-page-wrapper {
+  transition: filter 0.3s ease;
+}
+
+body.weibo-locked {
+  overflow: hidden;
+}
+
+body.weibo-locked .weibo-page-wrapper {
+  filter: blur(8px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ============================================================
+   “为什么”掉落特效画布
+   - 固定在视口上
+   - 默认隐藏，触发时通过 .active 显示
+   - pointer-events: none 保证不阻塞交互
+   ============================================================ */
+.why-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+  pointer-events: none;
+  display: none;
+}
+
+.why-canvas.active {
+  display: block;
+}
+
+/* ============================================================
+   密码保护弹窗
+   ============================================================ */
+.weibo-lock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weibo-lock-overlay[hidden] {
+  display: none !important;
+}
+
+.weibo-lock-panel {
+  width: 360px;
+  max-width: 90%;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.weibo-lock-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #333333;
+}
+
+.weibo-lock-tip {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: #666666;
+}
+
+.weibo-lock-input {
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #333333;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 6px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.weibo-lock-input:focus {
+  border-color: #ff8200;
+  box-shadow: 0 0 0 2px rgba(255, 130, 0, 0.15);
+}
+
+.weibo-lock-btn {
+  display: block;
+  width: 100%;
+  height: 40px;
+  margin-top: 16px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #ff8200;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.weibo-lock-btn:hover {
+  background: #ffa040;
+}
+
+.weibo-lock-btn:active {
+  background: #e57400;
+}
+
+.weibo-lock-error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #e74c3c;
+}
+
+.weibo-lock-error[hidden] {
+  display: none !important;
+}
+
+/* ============================================================
+   顶部导航栏
+   ============================================================ */
+.wb-topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 56px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+.wb-topnav-inner {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.wb-logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wb-logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #ff8200;
+}
+
+.wb-logo-text {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #333333;
+}
+
+.wb-search {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.wb-search-input {
+  width: 100%;
+  max-width: 400px;
+  height: 32px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #333333;
+  background: #f2f2f2;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  outline: none;
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.wb-search-input::placeholder {
+  color: #999999;
+}
+
+.wb-search-input:focus {
+  border-color: #ff8200;
+  background: #ffffff;
+}
+
+.wb-topnav-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wb-nav-icon,
+.wb-nav-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #666666;
+  background: #f2f2f2;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s ease, color .15s ease;
+}
+
+.wb-nav-icon:hover,
+.wb-nav-avatar:hover {
+  background: #ffe8cc;
+  color: #ff8200;
+}
+
+.wb-nav-avatar {
+  background: #ffe8cc;
+  color: #d96400;
+}
+
+/* ============================================================
+   三栏布局容器
+   ============================================================ */
+.wb-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px 40px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   左侧边栏
+   ============================================================ */
+.wb-sidebar-left {
+  flex: 0 0 200px;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-bottom: 8px;
+}
+
+.wb-sidebar-title {
+  padding: 12px 16px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #999999;
+  letter-spacing: 1px;
+}
+
+.wb-sidebar-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wb-sidebar-list-split {
+  border-top: 1px solid #e8e8e8;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.wb-sidebar-item {
+  position: relative;
+  padding: 9px 16px;
+  font-size: 14px;
+  color: #555555;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s ease, color .15s ease;
+}
+
+.wb-sidebar-item:hover {
+  background: #fff4e6;
+  color: #ff8200;
+}
+
+.wb-sidebar-item.active {
+  background: #fff2e0;
+  color: #ff8200;
+  font-weight: 600;
+}
+
+.wb-sidebar-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: #ff8200;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ============================================================
+   中间主内容区
+   ============================================================ */
+.wb-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   封面图区域（真实图片）
+   ============================================================ */
+.wb-cover,
+.weibo-cover {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  letter-spacing: 4px;
+  color: #999999;
+  background-color: #ffe8cc;
+  background-image: url('../assets/covers/weibo-cover.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.wb-cover > span,
+.weibo-cover > span {
+  display: none;
+}
+
+.wb-profile {
+  padding: 0 20px 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.wb-avatar-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-bottom: 10px;
+}
+
+.wb-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffb370;
+  background: #4a3a2a;
+  border: 4px solid #ffffff;
+  box-sizing: border-box;
+}
+
+.wb-verified {
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffb100;
+  border: 3px solid #ffffff;
+  box-sizing: border-box;
+}
+
+.wb-verified::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.wb-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wb-profile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wb-nickname {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #333333;
+  letter-spacing: 1px;
+}
+
+.wb-follow-btn {
+  padding: 6px 20px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #ff8200;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+
+.wb-follow-btn:hover {
+  background: #ffa040;
+}
+
+.wb-follow-btn:active {
+  background: #e57400;
+}
+
+.wb-profile-stats {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: #999999;
+}
+
+.wb-stat strong {
+  color: #333333;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.wb-bio {
+  font-size: 14px;
+  color: #555555;
+}
+
+.wb-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wb-tag {
+  padding: 2px 10px;
+  font-size: 12px;
+  color: #d96400;
+  background: #fff2e0;
+  border: 1px solid #ffd0a0;
+  border-radius: 10px;
+}
+
+.wb-tabs {
+  display: flex;
+  padding: 0 20px;
+  border-bottom: 1px solid #e8e8e8;
+  gap: 24px;
+}
+
+.wb-tab {
+  position: relative;
+  padding: 14px 0;
+  font-size: 14px;
+  color: #999999;
+  cursor: pointer;
+  user-select: none;
+  transition: color .15s ease;
+}
+
+.wb-tab:hover {
+  color: #555555;
+}
+
+.wb-tab.active {
+  color: #333333;
+  font-weight: 600;
+}
+
+.wb-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #ff8200;
+  border-radius: 1px;
+}
+
+.wb-tweet-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.wb-tweet {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  transition: background .15s ease;
+}
+
+.wb-tweet:last-child {
+  border-bottom: none;
+}
+
+.wb-tweet:hover {
+  background: #fafafa;
+}
+
+.wb-tweet-avatar {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffb370;
+  background: #4a3a2a;
+}
+
+.wb-tweet-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.wb-tweet-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.wb-tweet-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #d96400;
+}
+
+.wb-tweet-time {
+  font-size: 12px;
+  color: #999999;
+}
+
+.wb-tweet-from {
+  font-size: 12px;
+  color: #999999;
+}
+
+.wb-tweet-text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #333333;
+  word-break: break-word;
+  white-space: pre-wrap;
+  margin-bottom: 8px;
+}
+
+/* ============================================================
+   推文图片（真实 <img>）
+   - 有 image 字段的推文使用 .tweet-image-wrap + .tweet-image
+   - 加载失败时回退到 .tweet-image-placeholder
+   ============================================================ */
+.tweet-image-wrap {
+  margin-top: 12px;
+  margin-bottom: 8px;
+  max-width: 100%;
+}
+
+.tweet-image {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+  background: #e8e8e8;
+}
+
+.tweet-image-placeholder {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  background: #e8e8e8;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999999;
+  font-size: 14px;
+}
+
+/* ---------- 旧版图片占位（向后兼容） ---------- */
+.wb-tweet-image-placeholder {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  background: #f2f2f2;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999999;
+  font-size: 14px;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
+.wb-tweet-actions {
+  display: flex;
+  gap: 40px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #999999;
+}
+
+.wb-tweet-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: color .15s ease;
+}
+
+.wb-tweet-action:hover {
+  color: #ff8200;
+}
+
+.wb-tweet-action-icon {
+  display: inline-block;
+  font-size: 14px;
+}
+
+/* ============================================================
+   右侧边栏
+   ============================================================ */
+.wb-sidebar-right {
+  flex: 0 0 280px;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  padding-bottom: 16px;
+}
+
+.wb-help-section {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.wb-help-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #ff8200;
+}
+
+.wb-help-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.wb-recommend {
+  padding: 16px 0 8px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.wb-recommend-header {
+  padding: 0 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.wb-recommend-page {
+  font-size: 12px;
+  font-weight: 400;
+  color: #999999;
+}
+
+.wb-recommend-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wb-recommend-item {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .15s ease;
+}
+
+.wb-recommend-item:hover {
+  background: #fff4e6;
+}
+
+.wb-recommend-avatar {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.wb-recommend-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.wb-recommend-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-recommend-desc {
+  margin-top: 2px;
+  font-size: 12px;
+  color: #999999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-recommend-follow {
+  flex: 0 0 auto;
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #ff8200;
+  background: transparent;
+  border: 1px solid #ff8200;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+
+.wb-recommend-follow:hover {
+  background: #ff8200;
+  color: #ffffff;
+}
+
+.wb-footer-links {
+  padding: 14px 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  font-size: 12px;
+}
+
+.wb-footer-link {
+  color: #999999;
+  text-decoration: none;
+  transition: color .15s ease;
+}
+
+.wb-footer-link:hover {
+  color: #ff8200;
+}
+
+/* ============================================================
+   响应式
+   ============================================================ */
+@media (max-width: 1200px) {
+  .wb-sidebar-right {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .wb-sidebar-left {
+    display: none;
+  }
+}

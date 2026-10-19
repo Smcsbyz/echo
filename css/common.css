@@ -1,0 +1,127 @@
+/* ============================================================
+   文件路径：css/common.css
+   说明：公共基础样式（重置 + 主题色 + 通用按钮）
+         本次更新：
+           - 无功能性改动
+           - 入口页专属样式已在 index.html 的 <style> 中定义，
+             与私聊页面（#f0f5f0 白绿灰背景）保持一致
+           - 保留原有 .entry 与 .btn 相关样式，供其他页面复用
+   ============================================================ */
+
+/* ---------- 基础重置 ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- 系统无衬线字体 + 深色主题 ---------- */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e8ecf5;
+  background-color: #0f1117;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 带 hidden 属性的元素强制隐藏（避免被 display 样式覆盖） */
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- 通用按钮 ---------- */
+.btn {
+  display: inline-block;
+  padding: 10px 22px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #06231a;
+  background: #5ef2b0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .15s ease, box-shadow .15s ease, transform .1s ease;
+}
+
+.btn:hover {
+  background: #7bf7c3;
+  box-shadow: 0 6px 18px rgba(94, 242, 176, .25);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* 小号按钮 */
+.btn-small {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  border-radius: 6px;
+}
+
+/* 次级（幽灵）按钮 */
+.btn-ghost {
+  color: #9aa4bd;
+  background: transparent;
+  border: 1px solid #2f3650;
+}
+
+.btn-ghost:hover {
+  color: #e8ecf5;
+  background: #1a1f2e;
+  box-shadow: none;
+}
+
+/* ---------- 旧版入口页布局（index.html 已不再使用，保留供扩展） ---------- */
+.entry {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+  text-align: center;
+}
+
+.entry h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #e8ecf5;
+  text-shadow: 0 0 24px rgba(94, 242, 176, .18);
+}
+
+.entry .subtitle {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #7f89a3;
+}
+
+.entry .btn {
+  margin-top: 10px;
+  padding: 12px 40px;
+  font-size: 16px;
+}
+
+/* ============================================================
+   测试用元素：正式发布时给 body 加 production 类即可隐藏
+   ============================================================ */
+body.production .dev-only {
+  display: none !important;
+}

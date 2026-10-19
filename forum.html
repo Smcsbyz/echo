@@ -1,0 +1,273 @@
+<!-- forum.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>给力GAME交流站</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/forum.css">
+  <style>
+    .test-btn-area {
+      text-align: center;
+      padding: 14px 0 6px;
+    }
+    .test-btn {
+      padding: 4px 12px;
+      font-size: 11px;
+      color: #4a6a8a;
+      background: #e6ecf2;
+      border: 1px solid #a8b9c9;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .test-btn:hover {
+      background: #d5dfe8;
+      color: #2c5aa0;
+    }
+    .test-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .test-status {
+      font-size: 10px;
+      color: #999;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body class="forum-body production">
+
+  <button id="backHomeBtn" class="back-home-btn" type="button">回到首页</button>
+  <button id="resetStateBtn" class="back-home-btn reset-state-btn dev-only" type="button">重置状态</button>
+
+  <aside id="adLeft" class="ad-box" title="广告位招租">
+    <div class="ad-inner">
+      <div class="ad-title">广告位招租</div>
+      <div class="ad-sub">联系方式：xxx@mail.com</div>
+    </div>
+  </aside>
+
+  <aside id="adRight" class="ad-box" title="广告位招租">
+    <div class="ad-inner">
+      <div class="ad-title">广告位招租</div>
+      <div class="ad-sub">联系方式：xxx@mail.com</div>
+    </div>
+  </aside>
+
+  <div class="forum-wrap">
+
+    <nav class="forum-nav">
+      <div class="forum-nav-inner">
+        <div class="forum-nav-left">
+          <a href="#" class="forum-nav-link" data-placeholder="1">论坛</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">新站</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">官方微博</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">BLOG</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">群组</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">排行榜</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">简繁转换</a>
+        </div>
+        <div class="forum-nav-right">
+          <a href="#" class="forum-nav-link" data-placeholder="1">积分</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">提醒</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">消息</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">设置</a>
+          <a href="#" id="navMyPostsLink" class="forum-nav-link">我的发帖</a>
+          <a href="#" id="navMyLink" class="forum-nav-link">我的</a>
+          <a href="#" class="forum-nav-link" data-placeholder="1">签到</a>
+        </div>
+      </div>
+    </nav>
+
+    <header class="forum-banner">
+      <div class="forum-banner-inner">
+        <div class="forum-banner-title">
+          <h1>给力GAME交流站</h1>
+          <p class="forum-banner-sub">GAME BBS · 独立游戏 · 资源 · 同人</p>
+        </div>
+        <div class="forum-banner-search">
+          <input id="searchInput" class="forum-search-input" type="text" placeholder="搜索帖子或用户" autocomplete="off">
+          <button id="searchBtn" class="forum-search-btn" type="button">搜索</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="forum-stats">
+      <span class="forum-stats-left">今日: 415 | 昨日: 632 | 帖子: 7992086 | 会员: 685193</span>
+      <span id="forumWelcome" class="forum-stats-right">欢迎光临。</span>
+    </div>
+
+    <section id="viewHome" class="forum-view">
+      <div class="forum-block">
+        <div class="forum-block-header">
+          <span>热点推荐</span>
+        </div>
+        <ul id="hotPostsList" class="hot-posts-list"></ul>
+      </div>
+      <div id="boardsContainer" class="boards-container"></div>
+    </section>
+
+    <section id="viewBoard" class="forum-view" hidden>
+      <div class="forum-breadcrumb" id="boardBreadcrumb"></div>
+      <div class="board-toolbar">
+        <button id="newThreadBoard" class="forum-btn forum-btn-primary" type="button">发新帖</button>
+      </div>
+      <div id="boardFilterTabs" class="board-filter-tabs"></div>
+      <div class="forum-block">
+        <div class="forum-block-header">
+          <span id="boardTitle">游戏截图</span>
+        </div>
+        <div class="thread-list-head">
+          <div class="col-icon"></div>
+          <div class="col-title">标题</div>
+          <div class="col-author">作者</div>
+          <div class="col-count">回复/查看</div>
+          <div class="col-last">最后发表</div>
+        </div>
+        <div id="threadList" class="thread-list"></div>
+      </div>
+      <div id="boardPager" class="board-pager"></div>
+    </section>
+
+    <section id="viewPost" class="forum-view" hidden>
+      <div class="forum-breadcrumb" id="postBreadcrumb"></div>
+      <div class="board-toolbar">
+        <button id="newThreadBtnPost" class="forum-btn forum-btn-primary" type="button">发新帖</button>
+        <button id="replyBtnPost" class="forum-btn" type="button">回复</button>
+      </div>
+      <div class="post-detail">
+        <div class="post-head">
+          <h2 class="post-main-title" id="postMainTitle"></h2>
+          <div class="post-main-meta">
+            <span id="postMainDate"></span>
+            <span class="post-main-from">来自：给力GAME交流站</span>
+            <span class="post-main-only">只看该作者</span>
+          </div>
+        </div>
+        <div class="post-body-wrap">
+          <aside class="post-author-col">
+            <div class="post-author-avatar" id="postAuthorAvatar">种</div>
+            <div class="post-author-name" id="postAuthorName">种下一颗大太阳</div>
+            <div class="post-author-level">
+              <span class="level-icon">★</span>
+              <span id="postAuthorLevelText">Lv.3</span>
+            </div>
+            <dl class="post-author-stats">
+              <dt>帖子</dt>
+              <dd id="postAuthorPosts">128</dd>
+              <dt>积分</dt>
+              <dd id="postAuthorPoints">512</dd>
+              <dt>UID</dt>
+              <dd id="postAuthorUid">10086</dd>
+            </dl>
+            <button id="sendMsgBtn" class="forum-btn" type="button">发消息</button>
+          </aside>
+          <div class="post-main-col">
+            <div class="post-main-content" id="postMainContent"></div>
+            <div class="post-main-actions">
+              <button class="forum-btn" type="button" data-placeholder="1">点评</button>
+              <button class="forum-btn" type="button" data-placeholder="1">回复</button>
+            </div>
+          </div>
+        </div>
+        <div id="replyList" class="reply-list"></div>
+      </div>
+    </section>
+
+    <section id="viewSearch" class="forum-view" hidden>
+      <div class="forum-breadcrumb" id="searchBreadcrumb">论坛 &gt; 搜索</div>
+      <div class="forum-block">
+        <div class="forum-block-header">
+          <span>搜索结果</span>
+        </div>
+        <div id="searchResultsList" class="search-results-list"></div>
+      </div>
+    </section>
+
+    <section id="viewNoResult" class="forum-view" hidden>
+      <div class="forum-breadcrumb" id="noResultBreadcrumb">论坛 &gt; 搜索</div>
+      <div class="no-result-block">
+        <div class="no-result-text">无相关内容</div>
+        <button id="backToSearchBtn" class="forum-btn forum-btn-primary" type="button">返回搜索</button>
+      </div>
+    </section>
+
+    <section id="myPostsView" class="forum-view" hidden>
+      <div class="forum-breadcrumb" id="myPostsBreadcrumb">论坛 &gt; 我的发帖</div>
+      <div class="forum-block">
+        <div class="forum-block-header">
+          <span>我的发帖</span>
+        </div>
+        <div class="thread-list-head">
+          <div class="col-icon"></div>
+          <div class="col-title">标题</div>
+          <div class="col-author">作者</div>
+          <div class="col-count">回复/查看</div>
+          <div class="col-last">最后发表</div>
+        </div>
+        <div id="myPostsList" class="thread-list"></div>
+      </div>
+    </section>
+
+    <div class="test-btn-area dev-only">
+      <button id="testAccidentBtn" class="test-btn" type="button">【测试】模拟搜出A事故死亡</button>
+      <div id="testStatus" class="test-status"></div>
+    </div>
+
+    <div class="dev-test-links dev-only">
+      测试跳转：<a href="chat.html">私聊</a> | <a href="maker.html">开发者日志</a> | <a href="weibo.html">微博小号</a>
+    </div>
+
+  </div>
+
+  <div id="loginModal" class="login-modal" hidden>
+    <div class="login-modal-overlay"></div>
+    <div class="login-modal-panel">
+      <div class="login-modal-header">
+        <span>用户登录</span>
+        <button id="loginCloseBtn" class="login-modal-close" type="button">×</button>
+      </div>
+
+      <div class="login-form">
+        <label class="field">
+          <span class="field-label">账号</span>
+          <input id="usernameInput" class="forum-input" type="text" placeholder="请输入邮箱" autocomplete="off">
+        </label>
+
+        <label class="field" id="passwordField">
+          <span class="field-label">密码</span>
+          <input id="passwordInput" class="forum-input" type="password" placeholder="请输入密码" autocomplete="off">
+        </label>
+
+        <button id="loginBtn" class="forum-btn forum-btn-primary" type="button">登录</button>
+
+        <div class="login-link-row">
+          <a href="#" id="forgotPasswordLink" class="login-link">忘记密码？试试密保问题</a>
+        </div>
+      </div>
+
+      <div id="securityQuestionArea" class="security-area" hidden>
+        <div class="security-question">我最喜欢的花是什么？</div>
+        <label class="field">
+          <span class="field-label">答案</span>
+          <input id="securityAnswerInput" class="forum-input" type="text" placeholder="三个字" autocomplete="off">
+        </label>
+        <div class="security-actions">
+          <button id="submitSecurityBtn" class="forum-btn forum-btn-primary" type="button">提交</button>
+        </div>
+        <div class="login-link-row">
+          <a href="#" id="backToLoginLink" class="login-link">返回登录</a>
+        </div>
+      </div>
+
+      <div id="loginMessage" class="login-message"></div>
+    </div>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="data/searchData.js"></script>
+  <script src="js/forum.js"></script>
+
+</body>
+</html>

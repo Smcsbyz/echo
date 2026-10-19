@@ -1,0 +1,810 @@
+/* ============================================================
+   文件路径：css/game.css
+   说明：项目页样式（黑紫配色）
+   本次修正：
+     1. .developer-avatar 支持内部 <img> 头像显示（avatar44）
+     2. 新增 .developer-avatar-img 样式
+     3. 其余样式保持不变
+   ============================================================ */
+
+body.game-body {
+  background: #0a0612;
+  color: #e0d0f0;
+  font-size: 14px;
+  line-height: 1.65;
+  min-width: 1024px;
+  padding-top: 52px;
+}
+
+/* ---------- 顶部站点导航栏 ---------- */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  z-index: 100;
+  background: #150d24;
+  border-bottom: 1px solid #2a1a3a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .5);
+}
+.nav-inner {
+  max-width: 1200px; height: 100%;
+  margin: 0 auto; padding: 0 20px;
+  display: flex; align-items: center; gap: 18px;
+}
+.nav-left { flex: 0 0 auto; }
+.site-logo {
+  font-size: 18px; font-weight: 700; letter-spacing: 2px;
+  color: #a855f7; text-decoration: none;
+}
+.nav-center { flex: 1 1 auto; display: flex; justify-content: center; }
+.site-search {
+  width: 100%; max-width: 420px;
+  padding: 7px 12px;
+  font-family: inherit; font-size: 13px;
+  color: #e0d0f0;
+  background: #1a1030;
+  border: 1px solid #3a2a4a;
+  border-radius: 4px; outline: none;
+}
+.site-search::placeholder { color: #8877aa; }
+.site-search:disabled { cursor: not-allowed; opacity: .85; }
+.nav-right { flex: 0 0 auto; display: flex; gap: 18px; }
+.nav-right a { font-size: 13px; color: #b8a8cc; text-decoration: none; }
+.nav-right a:hover { color: #a855f7; }
+
+/* ---------- 主布局：加宽以容纳 960px canvas ---------- */
+.game-layout {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+.devlog-sidebar {
+  flex: 0 0 280px; min-width: 240px;
+  margin-top: 22px;
+  padding: 16px 16px 16px;
+  background: #150d24;
+  border: 1px solid #2a1a3a;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.game-main { flex: 1 1 70%; min-width: 0; }
+
+.developer-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 10px; margin-bottom: 14px;
+  background: #1a1030;
+  border: 1px solid #2a1a3a;
+  border-radius: 6px;
+  text-decoration: none; color: inherit; cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.developer-card:hover {
+  background: #221440;
+  border-color: #a855f7;
+  transform: translateY(-1px);
+}
+.developer-avatar {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #150d24;
+  background: linear-gradient(135deg, #c084fc, #a855f7);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, .35);
+  overflow: hidden;
+}
+
+.developer-avatar-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.developer-info { min-width: 0; flex: 1 1 auto; }
+.developer-name {
+  font-size: 13px; font-weight: 600; color: #e0d0f0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.developer-label {
+  margin-top: 2px; font-size: 11px;
+  color: #8877aa; letter-spacing: .5px;
+}
+.sidebar-title {
+  margin: 0 0 14px;
+  font-size: 15px; font-weight: 700;
+  letter-spacing: 1px; color: #e0d0f0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2a1a3a;
+}
+.devlog-entry { padding: 12px 0 14px; border-bottom: 1px dashed #2a1a3a; }
+.devlog-entry:last-of-type { border-bottom: none; }
+.devlog-version {
+  margin: 0; font-size: 14px; font-weight: 700;
+  color: #a855f7; letter-spacing: .5px;
+}
+.devlog-date {
+  margin: 2px 0 8px; font-size: 11px;
+  color: #8877aa; letter-spacing: .5px;
+}
+.devlog-label {
+  margin: 8px 0 2px; font-size: 12px;
+  font-weight: 600; color: #b8a8cc;
+}
+.devlog-list {
+  margin: 0 0 0 16px; padding: 0;
+  list-style: disc; font-size: 13px;
+  color: #a090c0; line-height: 1.75;
+}
+.devlog-list li { margin-bottom: 2px; }
+
+/* ============================================================
+   已读日记
+   ============================================================ */
+.note-review {
+  margin-top: 16px; padding-top: 12px;
+  border-top: 1px solid #2a1a3a;
+}
+.note-review .sidebar-title { margin-bottom: 10px; }
+.note-review-buttons {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.note-review-btn {
+  display: block; width: 100%; box-sizing: border-box;
+  padding: 5px 12px; margin: 0;
+  font-family: inherit; font-size: 13px;
+  color: #e0d0f0;
+  background: #6b21a8;
+  border: 1px solid #6b21a8;
+  border-radius: 4px;
+  cursor: pointer; text-align: center;
+  transition: background .15s ease, border-color .15s ease, transform .1s ease;
+}
+.note-review-btn:hover {
+  background: #7e22ce; border-color: #7e22ce;
+  transform: translateY(-1px);
+}
+.note-review-btn:active { transform: translateY(0); }
+
+.note-review-empty {
+  padding: 10px 0; font-size: 12px;
+  color: #8877aa; text-align: center;
+}
+
+.sidebar-test-area {
+  margin-top: 16px; padding-top: 12px;
+  border-top: 1px solid #2a1a3a;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.test-btn {
+  padding: 5px 12px; font-family: inherit;
+  font-size: 11px; color: #a090c0;
+  background: #1a1030;
+  border: 1px solid #3a2a4a;
+  border-radius: 4px;
+  cursor: pointer; text-align: center;
+}
+.test-btn:hover { background: #221440; color: #e0d0f0; border-color: #a855f7; }
+
+/* ---------- Banner（使用 banner.png） ---------- */
+.banner {
+  height: 200px;
+  margin-top: 22px;
+  background-image: url('../assets/backgrounds/banner.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid #2a1a3a;
+  border-radius: 6px;
+}
+
+.game-title-block {
+  padding: 26px 0 14px;
+  border-bottom: 1px solid #2a1a3a;
+}
+.game-title {
+  margin: 0; font-size: 30px; font-weight: 700;
+  letter-spacing: 1px; color: #e0d0f0;
+}
+.game-subtitle {
+  margin: 6px 0 0; font-size: 15px; color: #b8a8cc;
+}
+.game-description {
+  padding: 22px 0; font-size: 14px;
+  line-height: 1.85; color: #d0c0e8;
+  border-bottom: 1px solid #2a1a3a;
+}
+.game-description p { margin: 0 0 10px 0; }
+.game-description p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   游戏嵌入区
+   ============================================================ */
+.game-embed {
+  position: relative;
+  margin: 28px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* ---------- 游戏舞台：放大到 960×540 ---------- */
+.game-stage {
+  position: relative;
+  width: 960px;
+  height: 540px;
+  overflow: hidden;
+}
+
+/* ---------- Canvas：CSS 显示尺寸放大，内部逻辑仍为 800×450 ---------- */
+#gameCanvas {
+  display: block;
+  width: 960px;
+  height: 540px;
+  background: #14171c;
+  border: 1px solid #3a2a4a;
+  border-radius: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .65);
+}
+
+/* ---------- 阶段二第 5 关宝箱打开后的反色效果 ---------- */
+#gameCanvas.inverted {
+  filter: invert(1);
+  transition: filter 0.5s ease;
+}
+
+.game-hint {
+  margin: 0; font-size: 12px;
+  letter-spacing: 1px; color: #8877aa;
+}
+
+/* ============================================================
+   封面层（使用 cover.png）
+   - 阶段三完成后使用 .after-clear 切换到 cover-after.png
+   ============================================================ */
+.cover-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-image: url('../assets/backgrounds/cover.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 120px;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* ---------- 阶段三通关后的封面 ---------- */
+.cover-view.after-clear {
+  background-image: url('../assets/backgrounds/cover-after.png');
+}
+
+.cover-view::before {
+  content: "";
+}
+
+.cover-view .cover-image { display: none; }
+
+.cover-btn {
+  position: relative; z-index: 2;
+  padding: 12px 48px;
+  font-family: inherit; font-size: 18px; font-weight: 600;
+  color: #ffffff; background: #6b21a8;
+  border: none; border-radius: 8px;
+  cursor: pointer;
+  transition: background .15s ease, opacity .15s ease;
+}
+.cover-btn:hover:not(:disabled) { background: #7e22ce; }
+.cover-btn:disabled {
+  background: #2a1a3a; color: #8877aa;
+  cursor: not-allowed; opacity: 0.6;
+}
+
+/* ============================================================
+   角色选择层（蓝白渐变背景）
+   ============================================================ */
+.character-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background: linear-gradient(to top, #DDEFFF 0%, #FFFFFF 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  border-radius: 6px;
+}
+
+.char-title {
+  margin: 0;
+  font-size: 18px;
+  color: #1a2030;
+  letter-spacing: 2px;
+}
+
+.char-list {
+  display: flex; justify-content: center;
+  align-items: center; gap: 33px;
+}
+
+.char-btn {
+  position: relative;
+  width: 133px;
+  height: 183px;
+  border-radius: 12px;
+  background: #FFFFFF;
+  border: 3px solid #A8C8E8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, transform .1s ease, box-shadow .15s ease;
+  overflow: hidden;
+}
+
+.char-btn:hover:not(.locked) {
+  border-color: #6b21a8;
+  background: #F0F8FF;
+}
+
+.char-btn.selected {
+  border-color: #6b21a8;
+  background: #E8F0FF;
+  box-shadow: 0 0 24px rgba(107, 33, 168, 0.4);
+}
+
+.char-btn.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.7);
+}
+
+.char-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2030;
+  letter-spacing: 1px;
+}
+
+.char-blob {
+  width: 75px; height: 100px;
+  border-radius: 8px;
+  border: 2px solid rgba(168, 200, 232, 0.6);
+  background-color: #F0F8FF;
+}
+
+/* 角色选择图：使用立绘作为背景 */
+.char-btn[data-char="0"] .char-blob {
+  background-image: url('../assets/characters/char0/portrait.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.char-btn[data-char="1"] .char-blob {
+  background-image: url('../assets/characters/char1/portrait.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.char-btn[data-char="2"] .char-blob {
+  background-image: url('../assets/characters/char2/select.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.char-lock {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 42px;
+  color: #1a2030;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+}
+.char-btn.locked .char-lock { display: block; }
+
+@keyframes charAppear {
+  0% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.char-appear { animation: charAppear 500ms ease-out both; }
+
+.character-view.all-cleared .char-btn .char-lock { display: none !important; }
+.character-view.all-cleared .char-btn[data-char="0"] .char-blob,
+.character-view.all-cleared .char-btn[data-char="1"] .char-blob { display: none; }
+.character-view.all-cleared .char-btn {
+  cursor: pointer; opacity: 1; filter: none;
+  border-color: #A8C8E8; background: #FFFFFF;
+}
+.character-view.all-cleared .char-btn:hover {
+  border-color: #6b21a8; background: #F0F8FF;
+}
+.character-view.all-cleared .char-btn.selected {
+  border-color: #6b21a8; background: #E8F0FF;
+  box-shadow: 0 0 24px rgba(107, 33, 168, 0.4);
+}
+
+#epilogueText {
+  color: #5a6a80;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 4px;
+  min-height: 20px;
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+
+/* ============================================================
+   阶段三输入弹窗
+   ============================================================ */
+#lastWordsModal {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 50; display: none;
+  justify-content: center; align-items: center;
+}
+.last-words-overlay {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+}
+.last-words-panel {
+  position: relative; z-index: 1;
+  background: #1a1030; padding: 24px;
+  border: 1px solid #3a2a4a;
+  border-radius: 8px;
+  width: 500px; max-width: 90%;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, .75);
+}
+.last-words-title {
+  margin: 0 0 6px; font-size: 18px;
+  font-weight: 700; color: #e0d0f0;
+  letter-spacing: 1px;
+}
+.last-words-text {
+  margin: 0 0 10px; font-size: 14px;
+  color: #b8a8cc; line-height: 1.7;
+}
+.last-words-input {
+  width: 100%; height: 100px;
+  padding: 10px 12px;
+  font-family: inherit; font-size: 16px; line-height: 1.6;
+  color: #e0d0f0; background: #0a0612;
+  border: 1px solid #3a2a4a;
+  border-radius: 4px; outline: none;
+  resize: none; box-sizing: border-box;
+}
+.last-words-input:focus { border-color: #a855f7; }
+.last-words-input::placeholder { color: #8877aa; }
+.last-words-actions { display: flex; justify-content: center; margin-top: 14px; }
+
+.action-bar { display: none; }
+
+.game-btn {
+  display: inline-block; min-width: 130px;
+  padding: 9px 22px;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  letter-spacing: .5px; color: #e0d0f0;
+  background: #1a1030;
+  border: 1px solid #3a2a4a;
+  border-radius: 5px; cursor: pointer; text-align: center;
+  transition: background .15s ease, border-color .15s ease, transform .1s ease, min-width .15s ease;
+}
+.game-btn:hover { background: #251545; border-color: #a855f7; }
+.game-btn:active { transform: translateY(1px); }
+.game-btn.primary { color: #ffffff; background: #6b21a8; border-color: #6b21a8; }
+.game-btn.primary:hover { background: #7e22ce; border-color: #7e22ce; }
+.game-btn:disabled {
+  opacity: 0.45; cursor: not-allowed;
+  background: #1a1030; border-color: #3a2a4a; color: #8877aa;
+}
+.game-btn.primary:disabled {
+  background: #3a2058; border-color: #3a2058; color: #b8a8cc;
+}
+
+.more-info { margin: 22px 0; border: 1px solid #2a1a3a; border-radius: 6px; overflow: hidden; }
+.more-info-header {
+  width: 100%; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  font-family: inherit; font-size: 15px; font-weight: 600;
+  color: #e0d0f0; background: #150d24;
+  border: none; cursor: pointer; text-align: left;
+}
+.more-info-header:hover { background: #1a1030; }
+.toggle-arrow {
+  display: inline-block; width: 12px; font-size: 12px;
+  color: #a855f7; transition: transform .18s ease;
+}
+.more-info-header[aria-expanded="true"] .toggle-arrow { transform: rotate(90deg); }
+.more-info-body {
+  padding: 16px 18px 18px;
+  background: #0a0612;
+  border-top: 1px solid #2a1a3a;
+}
+.info-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  row-gap: 10px; column-gap: 16px;
+  font-size: 13px;
+}
+.info-list dt { color: #8877aa; }
+.info-list dd { margin: 0; color: #e0d0f0; }
+.tag {
+  display: inline-block; margin-right: 6px;
+  padding: 2px 10px; font-size: 12px;
+  color: #c8a8e8; background: #1a1030;
+  border: 1px solid #3a2a4a;
+  border-radius: 20px;
+}
+
+.comments { margin-top: 26px; }
+.comments-title {
+  margin: 0 0 14px; font-size: 18px; font-weight: 600;
+  letter-spacing: .5px; color: #e0d0f0;
+}
+.comment-item {
+  padding: 12px 14px; margin-bottom: 12px;
+  background: #150d24;
+  border: 1px solid #2a1a3a;
+  border-radius: 5px; font-size: 13px;
+}
+.comment-user { font-weight: 600; color: #a855f7; }
+.comment-text { margin-left: 8px; color: #d0c0e8; }
+
+.comment-inner { display: flex; gap: 12px; align-items: flex-start; }
+.comment-avatar {
+  flex: 0 0 auto; width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700;
+  color: #ffffff; background: #4a7ca0; user-select: none;
+}
+.comment-body-wrap { flex: 1 1 auto; min-width: 0; }
+.comment-body-wrap .comment-user { display: block; margin-bottom: 4px; font-size: 13px; }
+.comment-body-wrap .comment-text { display: block; margin-left: 0; line-height: 1.7; }
+.comment-like { margin-top: 6px; font-size: 12px; color: #8877aa; letter-spacing: .5px; }
+
+.player-comments {
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;
+}
+.player-comments .comment-item { margin-bottom: 0; }
+.comment-form { display: flex; gap: 10px; margin-top: 14px; }
+.comment-input {
+  flex: 1 1 auto; min-width: 0;
+  padding: 9px 12px;
+  font-family: inherit; font-size: 14px;
+  color: #e0d0f0; background: #1a1030;
+  border: 1px solid #3a2a4a;
+  border-radius: 5px; outline: none;
+}
+.comment-input:focus { border-color: #a855f7; }
+.comment-input::placeholder { color: #8877aa; }
+
+.dev-test-links {
+  padding: 12px 0 28px; text-align: center;
+  font-size: 11px; color: #8877aa;
+}
+.dev-test-links a { color: #8877aa; text-decoration: none; }
+.dev-test-links a:hover { color: #a855f7; text-decoration: underline; }
+
+/* ============================================================
+   弹窗
+   ============================================================ */
+.key-modal {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1000;
+  display: flex; justify-content: center; align-items: center;
+}
+.key-modal-overlay {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+.key-modal-panel {
+  position: relative; z-index: 1;
+  background: #1a1030;
+  padding: 24px;
+  border: 1px solid #3a2a4a;
+  border-radius: 8px;
+  max-width: 560px; width: 92%;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, .75);
+  box-sizing: border-box;
+}
+.key-modal-title {
+  margin: 0 0 6px; font-size: 18px; font-weight: 700;
+  color: #e0d0f0; letter-spacing: 1px; text-align: center;
+}
+.key-modal-text {
+  margin: 0 0 6px; font-size: 14px;
+  color: #b8a8cc; line-height: 1.7;
+}
+.key-input {
+  width: 100%; padding: 8px 10px;
+  margin: 12px 0;
+  font-family: inherit; font-size: 14px;
+  color: #e0d0f0; background: #0a0612;
+  border: 1px solid #3a2a4a;
+  border-radius: 4px; outline: none;
+}
+.key-input:focus { border-color: #a855f7; }
+.key-input::placeholder { color: #8877aa; }
+.key-modal-actions {
+  display: flex; justify-content: center;
+  gap: 16px; margin-top: 16px;
+}
+.key-error {
+  margin-top: 12px; font-size: 14px;
+  color: #e74c3c; text-align: center;
+}
+
+.key-modal .key-modal-actions .game-btn {
+  min-width: 80px;
+  height: 36px;
+  padding: 6px 20px;
+  font-size: 14px; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* ============================================================
+   密钥填空题
+   ============================================================ */
+.key-fill-line {
+  display: flex; flex-wrap: nowrap;
+  justify-content: center; align-items: center;
+  gap: 4px; margin: 16px 0 8px;
+  font-size: 16px; line-height: 1.6;
+  color: #e0d0f0; white-space: nowrap;
+}
+.key-fill-text {
+  display: inline-block; flex: 0 0 auto;
+  font-size: 16px; line-height: 1.6;
+  color: #e0d0f0; letter-spacing: 0;
+  user-select: none; white-space: nowrap;
+}
+.key-fill-input {
+  display: inline-block; flex: 0 0 auto;
+  height: 32px; padding: 0; margin: 0;
+  font-family: inherit; font-size: 16px; line-height: 32px;
+  text-align: center; color: #e0d0f0;
+  background: #1a1030;
+  border: 1px solid #3a2a4a;
+  border-radius: 4px; outline: none;
+  box-sizing: border-box; caret-color: #a855f7;
+  transition: border-color .15s ease, box-shadow .15s ease;
+  vertical-align: middle;
+}
+.key-fill-input.text-input { width: 28px; }
+.key-fill-input.num-input { width: 22px; }
+.key-fill-input:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.25);
+}
+.key-fill-input.error {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.25);
+}
+
+/* ============================================================
+   日记弹窗排版
+   ============================================================ */
+
+.note-modal .key-modal-panel,
+.note-review-modal .key-modal-panel {
+  max-width: 720px;
+  width: 92%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.note-modal-title,
+.note-modal .key-modal-title,
+.note-review-modal .key-modal-title {
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+.note-modal-date {
+  text-align: center;
+  margin: 6px 0 14px;
+  font-size: 14px;
+  color: #b8a8cc;
+  letter-spacing: 1px;
+  flex: 0 0 auto;
+}
+
+.note-modal .note-content,
+.note-review-modal .note-content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 8px;
+  margin: 12px 0;
+  line-height: 1.9;
+  white-space: normal;
+}
+
+.note-modal .note-content::-webkit-scrollbar,
+.note-review-modal .note-content::-webkit-scrollbar {
+  width: 8px;
+}
+.note-modal .note-content::-webkit-scrollbar-track,
+.note-review-modal .note-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.note-modal .note-content::-webkit-scrollbar-thumb,
+.note-review-modal .note-content::-webkit-scrollbar-thumb {
+  background: #3a2a4a;
+  border-radius: 4px;
+}
+.note-modal .note-content::-webkit-scrollbar-thumb:hover,
+.note-review-modal .note-content::-webkit-scrollbar-thumb:hover {
+  background: #6b21a8;
+}
+
+.note-modal .key-modal-actions,
+.note-review-modal .key-modal-actions {
+  flex: 0 0 auto;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #2a1a3a;
+  justify-content: center;
+  text-align: center;
+}
+
+.note-modal-content {
+  text-align: justify;
+  text-indent: 2em;
+  margin: 0 0 1em 0;
+  line-height: 1.9;
+  word-break: break-word;
+}
+.note-modal-content p {
+  text-indent: 2em;
+  text-align: justify;
+  margin-bottom: 1em;
+}
+.note-modal-footer { text-align: center; }
+.note-modal-footer button { display: inline-block; }
+.note-review-modal .note-content { line-height: 1.9; }
+
+@media (max-width: 1024px) {
+  .game-layout { flex-direction: column; }
+  .devlog-sidebar {
+    flex: 1 1 auto; width: 100%;
+    min-width: 0; margin-top: 22px;
+  }
+}

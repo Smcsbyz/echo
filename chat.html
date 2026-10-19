@@ -1,0 +1,194 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>私聊 - 网页解密游戏</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/chat.css">
+  <style>
+    .test-btn-area {
+      text-align: center;
+      padding: 8px 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .test-btn {
+      padding: 4px 12px;
+      font-size: 11px;
+      color: #666;
+      background: #e8efe8;
+      border: 1px solid #c8e0c8;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .test-btn:hover {
+      background: #d4ead4;
+      color: #4caf50;
+    }
+    .test-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .test-status {
+      width: 100%;
+      text-align: center;
+      font-size: 10px;
+      color: #888;
+      margin-top: 2px;
+      min-height: 12px;
+    }
+  </style>
+</head>
+<body class="production">
+
+  <div class="chat-app">
+    <!-- 左栏：联系人列表 -->
+    <aside class="chat-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-avatar">头</div>
+        <input class="sidebar-search" type="text" placeholder="搜索" disabled>
+      </div>
+      <div id="contactList" class="contact-list"></div>
+      <div class="sidebar-footer">
+        <button id="friendRequestBtn" class="friend-request-btn" type="button">
+          <span>好友申请</span>
+          <span id="friendRequestDot" class="friend-request-dot" hidden></span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 右栏：聊天区 -->
+    <main class="chat-main">
+
+      <!-- 视图 1：好友申请 -->
+      <div id="viewFriendRequest" class="chat-view" hidden>
+        <header class="chat-header">
+          <div class="chat-title">好友申请</div>
+          <div class="chat-header-right">
+            <span class="chat-header-more" aria-hidden="true">···</span>
+          </div>
+        </header>
+        <div class="friend-request-list">
+          <div class="friend-request-item">
+            <div class="contact-avatar" style="background:#b39ddb;">云</div>
+            <div class="friend-request-body">
+              <div class="friend-request-name">如果那片云</div>
+              <div class="friend-request-text">UPUP，我这里有个很好的视频素材，要不要看看</div>
+            </div>
+            <div class="friend-request-actions">
+              <button id="acceptFriendBtn" class="friend-btn accept" type="button">同意</button>
+              <button id="rejectFriendBtn" class="friend-btn reject" type="button">拒绝</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 视图 2：主聊天 -->
+      <div id="viewMainChat" class="chat-view" hidden>
+        <header class="chat-header">
+          <div id="mainChatTitle" class="chat-title">如果那片云</div>
+          <div class="chat-header-right">
+            <button id="audioBtn" class="btn btn-small" type="button" hidden>启用提示音</button>
+            <span class="chat-header-more" aria-hidden="true">···</span>
+          </div>
+        </header>
+        <main id="messageList" class="message-list"></main>
+        <footer class="chat-footer">
+          <div id="optionList" class="option-list"></div>
+          <div id="inputArea" class="input-area">
+            <div class="input-row">
+              <input id="chatInput" class="chat-input" type="text" placeholder="输入你找到的名字">
+              <button id="sendBtn" class="btn btn-small" type="button">发送</button>
+            </div>
+            <div id="inputError" class="input-error"></div>
+          </div>
+        </footer>
+      </div>
+
+      <!-- 视图 3：其他联系人 -->
+      <div id="viewOtherContact" class="chat-view" hidden>
+        <header class="chat-header">
+          <div id="otherChatTitle" class="chat-title"></div>
+          <div class="chat-header-right">
+            <span class="chat-header-more" aria-hidden="true">···</span>
+          </div>
+        </header>
+        <main id="otherMessageList" class="message-list"></main>
+        <footer class="chat-footer">
+          <div class="chat-footer-hint">仅展示历史消息</div>
+        </footer>
+      </div>
+
+      <!-- 视图 4：空状态 -->
+      <div id="viewEmpty" class="chat-view chat-empty" hidden>
+        <div class="chat-empty-text">请从左侧选择一个联系人</div>
+      </div>
+
+      <!-- 视图 5：匿名邮件 -->
+      <div id="viewEmail" class="chat-view" hidden>
+        <header class="chat-header">
+          <div class="chat-title">匿名邮件</div>
+          <div class="chat-header-right">
+            <span class="chat-header-more" aria-hidden="true">···</span>
+          </div>
+        </header>
+        <div class="email-content">
+          <h2 class="email-subject" id="emailSubject">（无标题）</h2>
+          <p class="email-body">这是一封没有发件人的邮件。</p>
+
+          <div class="email-image-wrap">
+            <div class="email-image-placeholder">AB 合照占位</div>
+            <div class="email-image-actions">
+              <button id="viewLargeImageBtn" class="email-btn" type="button">查看大图</button>
+              <button id="saveImageBtn" class="email-btn" type="button">保存图片</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- 结局全屏覆盖层 -->
+  <div id="endingOverlay" class="ending-overlay">
+    <div id="endingText" class="ending-text"></div>
+  </div>
+
+  <!-- 音乐开关按钮 -->
+  <button id="musicToggleBtn" class="music-toggle-btn" type="button" hidden>🔇</button>
+
+  <!-- 图片放大弹窗 -->
+  <div id="imageModal" class="image-modal" hidden>
+    <div class="image-modal-overlay" id="imageModalOverlay"></div>
+    <div class="image-modal-content">
+      <button id="imageModalClose" class="image-modal-close" type="button">×</button>
+      <div class="image-modal-placeholder">AB 合照占位（放大）</div>
+    </div>
+  </div>
+
+  <!-- 测试按钮区域 -->
+  <div class="test-btn-area dev-only">
+    <button id="testDeathNewsBtn" class="test-btn" type="button">【测试】触发死亡新闻</button>
+    <button id="testStage2Btn" class="test-btn" type="button">【测试】模拟阶段二完成</button>
+    <button id="testStage3Btn" class="test-btn" type="button">【测试】模拟完成阶段三</button>
+    <button id="testMockBgMsgBtn" class="test-btn" type="button">【测试】模拟后台消息</button>
+    <button id="testForceAudioBtn" class="test-btn" type="button">【测试】强制播放提示音</button>
+    <button id="testAudioBtn" class="test-btn" type="button">【测试】播放音效</button>
+    <button id="testTrueEndingBtn" class="test-btn" type="button">【测试】解锁真结局联系人</button>
+    <div id="testDeathStatus" class="test-status"></div>
+  </div>
+
+  <div class="dev-test-links dev-only">
+    测试跳转：<a href="forum.html">论坛</a> | <a href="maker.html">开发者日志</a> | <a href="weibo.html">微博小号</a>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="js/chat.js"></script>
+
+</body>
+</html>

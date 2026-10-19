@@ -1,0 +1,146 @@
+<!-- weibo.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关关子君 - 围博</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/weibo.css">
+</head>
+<body class="weibo-body production">
+
+  <div id="weiboPageWrapper" class="weibo-page-wrapper">
+
+    <header class="wb-topnav">
+      <div class="wb-topnav-inner">
+        <div class="wb-logo">
+          <div class="wb-logo-icon">围</div>
+          <div class="wb-logo-text">围博</div>
+        </div>
+
+        <div class="wb-search">
+          <input class="wb-search-input" type="text" placeholder="搜索围博" autocomplete="off">
+        </div>
+
+        <div class="wb-topnav-right">
+          <div class="wb-nav-icon" title="首页">首</div>
+          <div class="wb-nav-icon" title="视频">视</div>
+          <div class="wb-nav-icon" title="消息">消</div>
+          <div class="wb-nav-avatar" id="topnavAvatar" title="头像">君</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="wb-layout">
+
+      <aside class="wb-sidebar-left">
+        <div class="wb-sidebar-title">首页</div>
+        <ul class="wb-sidebar-list">
+          <li class="wb-sidebar-item active" data-action="all-follow">全部关注</li>
+          <li class="wb-sidebar-item" data-action="latest">最新围博</li>
+          <li class="wb-sidebar-item" data-action="special">特别关注</li>
+          <li class="wb-sidebar-item" data-action="friends">好友圈</li>
+        </ul>
+
+        <ul class="wb-sidebar-list wb-sidebar-list-split">
+          <li class="wb-sidebar-item" data-action="group-dongman">动漫</li>
+          <li class="wb-sidebar-item" data-action="group-youxi">游戏</li>
+          <li class="wb-sidebar-item" data-action="group-mingxing">名人明星</li>
+          <li class="wb-sidebar-item" data-action="group-tongshi">同事</li>
+          <li class="wb-sidebar-item" data-action="group-tongxue">同学</li>
+          <li class="wb-sidebar-item" data-action="group-qiaoqiao">悄悄关注</li>
+        </ul>
+      </aside>
+
+      <main class="wb-main">
+
+        <div class="wb-cover">
+          <span>封面图占位</span>
+        </div>
+
+        <div class="wb-profile">
+          <div class="wb-avatar-wrap">
+            <div class="wb-avatar" id="weiboAvatar">君</div>
+            <div class="wb-verified" title="认证"></div>
+          </div>
+
+          <div class="wb-profile-info">
+            <div class="wb-profile-top">
+              <h1 class="wb-nickname" id="weiboNickname">关关子君</h1>
+              <button class="wb-follow-btn" type="button" data-action="follow">关注</button>
+            </div>
+
+            <div class="wb-profile-stats">
+              <span class="wb-stat"><strong>1.2万</strong>粉丝</span>
+              <span class="wb-stat"><strong>356</strong>关注</span>
+              <span class="wb-stat"><strong>4.5万</strong>转评赞</span>
+            </div>
+
+            <div class="wb-bio" id="weiboBio">记录一些日常。</div>
+
+            <div class="wb-tags">
+              <span class="wb-tag">游戏博主</span>
+              <span class="wb-tag">IP属地：未知</span>
+            </div>
+          </div>
+        </div>
+
+        <nav class="wb-tabs">
+          <span class="wb-tab" data-tab="featured">精选</span>
+          <span class="wb-tab active" data-tab="weibo">围博</span>
+          <span class="wb-tab" data-tab="video">视频</span>
+          <span class="wb-tab" data-tab="album">相册</span>
+          <span class="wb-tab" data-tab="article">文章</span>
+        </nav>
+
+        <div id="tweetList" class="wb-tweet-list"></div>
+
+      </main>
+
+      <aside class="wb-sidebar-right">
+
+        <div class="wb-help-section">
+          <div class="wb-help-icon">助</div>
+          <div class="wb-help-text">为TA助威</div>
+        </div>
+
+        <div class="wb-recommend">
+          <div class="wb-recommend-header">
+            <span>关注推荐</span>
+            <span class="wb-recommend-page">1/7</span>
+          </div>
+          <ul class="wb-recommend-list" id="recommendList"></ul>
+        </div>
+
+        <div class="wb-footer-links">
+          <a href="#" class="wb-footer-link" data-action="help">帮助中心</a>
+          <a href="#" class="wb-footer-link" data-action="service">合作&amp;服务</a>
+          <a href="#" class="wb-footer-link" data-action="report">举报中心</a>
+          <a href="#" class="wb-footer-link" data-action="about">关于围博</a>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+  <canvas id="whyCanvas" class="why-canvas"></canvas>
+
+  <div id="weiboLockOverlay" class="weibo-lock-overlay" hidden>
+    <div id="weiboLockPanel" class="weibo-lock-panel">
+      <h2 class="weibo-lock-title">该账号被设置为私密</h2>
+      <p class="weibo-lock-tip">请输入密码</p>
+      <input id="weiboPasswordInput" class="weibo-lock-input" type="password" placeholder="六个字" autocomplete="off">
+      <button id="weiboPasswordBtn" class="weibo-lock-btn" type="button">确认</button>
+      <div id="weiboPasswordError" class="weibo-lock-error" hidden>密码错误，请重试</div>
+    </div>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="data/weiboData.js"></script>
+  <script src="js/weibo.js"></script>
+
+</body>
+</html>

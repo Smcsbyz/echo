@@ -1,0 +1,278 @@
+/* ============================================================
+   文件路径：css/developer.css
+   说明：开发商主页样式（黑紫风格，与 game.html 一致）
+         含统计数据（占据卡片全宽、space-around 均匀分布）
+         + 最近动态小封面
+         本次修正：
+           1. .activity-cover 支持背景图（cover.png）填充
+           2. 其余样式保持不变
+   ============================================================ */
+
+/* ---------- 页面基础 ---------- */
+body.developer-body {
+  background: #0a0612;
+  color: #e0d0f0;
+  font-size: 14px;
+  line-height: 1.7;
+  min-width: 1024px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   顶部返回链接
+   ============================================================ */
+.developer-topbar {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 20px 0;
+}
+
+.back-link {
+  font-size: 13px;
+  color: #b8a8cc;
+  text-decoration: none;
+  transition: color .15s ease;
+}
+
+.back-link:hover {
+  color: #a855f7;
+}
+
+/* ============================================================
+   主内容容器
+   ============================================================ */
+.developer-main {
+  flex: 1 1 auto;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 20px 24px;
+  box-sizing: border-box;
+}
+
+/* ---------- 通用区块标题 ---------- */
+.section-title {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #e0d0f0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2a1a3a;
+}
+
+/* ============================================================
+   1. 开发商资料卡
+   ============================================================ */
+.dev-profile {
+  padding: 24px;
+  background: #150d24;
+  border: 1px solid #2a1a3a;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* ---------- 头部：头像 + 信息 ---------- */
+.dev-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 圆形头像：直径约 80px */
+.dev-avatar {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #150d24;
+  background: linear-gradient(135deg, #c084fc, #a855f7);
+  box-shadow: 0 6px 18px rgba(168, 85, 247, .35);
+}
+
+.dev-profile-info {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.dev-nickname {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #f0e6ff;
+}
+
+.dev-bio {
+  margin: 0 0 4px;
+  font-size: 13.5px;
+  color: #b8a8cc;
+  line-height: 1.75;
+}
+
+.dev-bio-link {
+  color: #a855f7;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(168, 85, 247, .6);
+}
+
+.dev-bio-link:hover {
+  color: #c084fc;
+  border-bottom-color: #c084fc;
+}
+
+/* ============================================================
+   统计数据（占据卡片全宽、均匀分布）
+   ============================================================ */
+.dev-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #2a1a3a;
+  box-sizing: border-box;
+}
+
+.dev-stat-item {
+  flex: 1 1 0;
+  text-align: center;
+  min-width: 0;
+}
+
+.dev-stat-num {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e0d0f0;
+  line-height: 1.2;
+}
+
+.dev-stat-label {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #8877aa;
+  letter-spacing: .5px;
+}
+
+/* ============================================================
+   2. 账号信息区
+   ============================================================ */
+.dev-account-section {
+  margin-top: 24px;
+  padding: 20px 24px;
+  background: #150d24;
+  border: 1px solid #2a1a3a;
+  border-radius: 8px;
+}
+
+.account-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  row-gap: 10px;
+  column-gap: 20px;
+  font-size: 13.5px;
+}
+
+.account-row {
+  display: contents;
+}
+
+.account-key {
+  color: #8877aa;
+  margin: 0;
+}
+
+.account-value {
+  color: #e0d0f0;
+  margin: 0;
+}
+
+/* ============================================================
+   3. 最近动态区
+   ============================================================ */
+.dev-activity-section {
+  margin-top: 24px;
+  padding: 20px 24px;
+  background: #150d24;
+  border: 1px solid #2a1a3a;
+  border-radius: 8px;
+}
+
+.activity-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.activity-item {
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 13.5px;
+  color: #d0c0e8;
+  border-bottom: 1px solid #2a1a3a;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.activity-item:first-child {
+  padding-top: 0;
+}
+
+.activity-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ---------- 最近动态小封面：使用 cover.png 作为背景 ---------- */
+.activity-cover {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  background-color: #2a1a3a;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ============================================================
+   临时测试跳转区（正式版删除）
+   ============================================================ */
+.dev-test-links {
+  margin-top: auto;
+  padding: 12px 0 28px;
+  text-align: center;
+  font-size: 10px;
+  color: #8877aa;
+}
+
+.dev-test-links a {
+  color: #8877aa;
+  text-decoration: none;
+}
+
+.dev-test-links a:hover {
+  color: #a855f7;
+  text-decoration: underline;
+}

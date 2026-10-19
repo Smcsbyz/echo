@@ -1,0 +1,355 @@
+<!-- game.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的小屋 - 游戏站</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body class="game-body production">
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a class="site-logo" href="#" onclick="return false;">游戏站</a>
+      </div>
+      <div class="nav-center">
+        <input class="site-search" type="text" placeholder="搜索游戏或创作者" disabled>
+      </div>
+      <nav class="nav-right">
+        <a href="#" onclick="return false;">控制台</a>
+        <a href="#" onclick="return false;">库</a>
+        <a href="#" onclick="return false;">登录</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="game-layout">
+
+    <aside id="devlogSidebar" class="devlog-sidebar">
+
+      <a id="developerCard" class="developer-card" href="developer.html">
+        <div class="developer-avatar">
+          <img src="assets/avatars/avatar44.png" alt="种下一颗大太阳" class="developer-avatar-img" onerror="this.style.display='none'; this.parentNode.textContent='阳';">
+        </div>
+        <div class="developer-info">
+          <div class="developer-name">种下一颗大太阳</div>
+          <div class="developer-label">开发商</div>
+        </div>
+      </a>
+
+      <h2 class="sidebar-title">开发日志</h2>
+
+      <article class="devlog-entry">
+        <h3 class="devlog-version">v1.0.0</h3>
+        <p class="devlog-date">2026-09-15</p>
+        <ul class="devlog-list"><li>游戏完结</li></ul>
+      </article>
+
+      <article class="devlog-entry">
+        <h3 class="devlog-version">v0.2.4</h3>
+        <p class="devlog-date">2024-04-30</p>
+        <ul class="devlog-list">
+          <li>新增：基础 Boss 战原型，第一章守关 Boss</li>
+          <li>新增：通关结算面板，统计击杀、受伤数据</li>
+          <li>修复：结算面板文字错位、药剂掉出地图无法拾取</li>
+          <li>调整：主界面字体，修复部分文字边缘模糊问题</li>
+        </ul>
+      </article>
+
+      <article class="devlog-entry">
+        <h3 class="devlog-version">v0.2.3</h3>
+        <p class="devlog-date">2024-03-13</p>
+        <ul class="devlog-list">
+          <li>新增：第一章第一关完整地图，包含平台与陷阱</li>
+          <li>新增：临时武器系统，场景拾取短柄斧，高伤害短耐久</li>
+          <li>优化：菜单设置面板，增加音量滑块</li>
+          <li>修复：拾取物刷新异常</li>
+        </ul>
+      </article>
+
+      <article class="devlog-entry">
+        <h3 class="devlog-version">v0.2.2</h3>
+        <p class="devlog-date">2023-02-15</p>
+        <ul class="devlog-list">
+          <li>新增：远程敌人「投矛兵」，会保持距离投掷攻击</li>
+          <li>新增：敌人死亡掉落恢复药剂</li>
+          <li>调整：耐力恢复速度降低，资源管理压力提升</li>
+          <li>修复：低分辨率下UI错位问题</li>
+        </ul>
+      </article>
+
+      <article class="devlog-entry">
+        <h3 class="devlog-version">v0.2.1</h3>
+        <p class="devlog-date">2024-01-04</p>
+        <ul class="devlog-list">
+          <li>新增：格挡机制，完美格挡可弹开敌人并造成短暂眩晕</li>
+          <li>新增：3类新敌人</li>
+          <li>优化：格挡判定帧不稳定的bug</li>
+          <li>优化：改进存档读写逻辑，提升加载速度</li>
+        </ul>
+      </article>
+
+      <article class="devlog-entry">
+        <h3 class="devlog-version">v0.2.0</h3>
+        <p class="devlog-date">2023-12-18</p>
+        <ul class="devlog-list">
+          <li>新增：第一类杂兵「游荡者」，近战挥砍AI</li>
+          <li>新增：基础轻重攻击连招，角色闪避机制，有无敌帧判定</li>
+          <li>调整：闪避消耗耐力，连续闪避会触发耐力惩罚</li>
+          <li>优化：敌人重复生成、碰撞判定异常问题</li>
+        </ul>
+      </article>
+
+      <div id="noteReview" class="note-review" hidden>
+        <h2 class="sidebar-title">日记</h2>
+        <div id="noteReviewList"></div>
+      </div>
+
+      <div class="sidebar-test-area dev-only">
+        <button id="testKeyABtn" class="test-btn" type="button">【测试】打开密钥 a 弹窗</button>
+        <button id="testKeyBBtn" class="test-btn" type="button">【测试】打开密钥 b 弹窗</button>
+        <button id="testPhase1DoneBtn" class="test-btn" type="button">【测试】模拟阶段一完成</button>
+        <button id="testResetStage1Btn" class="test-btn" type="button">【测试】重置阶段一</button>
+        <button id="testResetKeyABtn" class="test-btn" type="button">【测试】重置密钥 a</button>
+        <button id="testResetPlayerBtn" class="test-btn" type="button">【测试】重置角色到起点</button>
+        <button id="testResetCurrentLevelBtn" class="test-btn" type="button">【测试】重置当前关卡</button>
+        <button id="testClearStageBtn" class="test-btn" type="button">【测试】通关当前关卡</button>
+        <button id="testLastLevelBtn" class="test-btn" type="button">【测试】跳到最后关卡</button>
+        <button id="testResetStage2Btn" class="test-btn" type="button">【测试】重置阶段二</button>
+        <button id="testStage3Btn" class="test-btn" type="button">【测试】进入阶段三</button>
+        <button id="testResetStage3Btn" class="test-btn" type="button">【测试】重置阶段三</button>
+        <button id="testShowCoverBtn" class="test-btn" type="button">【测试】显示封面</button>
+        <button id="testAudioBtn" class="test-btn" type="button">【测试】播放音效</button>
+      </div>
+    </aside>
+
+    <main class="game-main">
+
+      <section class="banner"></section>
+
+      <section class="game-title-block">
+        <h1 class="game-title">我的小屋</h1>
+        <p class="game-subtitle">这是我的小屋，不是家。</p>
+      </section>
+
+      <section id="gameDescription" class="game-description">
+        <p>《我的小屋》是一款阳光健康积极向上的横版平台跳跃游戏。玩家将在地图中探索，找到钥匙，帮助小熊回到它的小屋。</p>
+      </section>
+
+      <section id="gameEmbed" class="game-embed">
+        <div class="game-stage">
+          <canvas id="gameCanvas" width="800" height="450"></canvas>
+
+          <div id="coverView" class="cover-view" style="display: flex;">
+            <button id="startGameBtn" class="cover-btn" type="button">开始游戏</button>
+          </div>
+
+          <div id="characterView" class="character-view" style="display: none;">
+            <h2 class="char-title">选择角色</h2>
+            <div class="char-list">
+              <div id="char0Btn" class="char-btn" data-char="0">
+                <div class="char-name">角色0号</div>
+                <div class="char-blob"></div>
+                <div class="char-lock">🔒</div>
+              </div>
+              <div id="char1Btn" class="char-btn" data-char="1">
+                <div class="char-name">角色1号</div>
+                <div class="char-blob"></div>
+                <div class="char-lock">🔒</div>
+              </div>
+              <div id="char2Btn" class="char-btn" data-char="2">
+                <div class="char-name">角色2号</div>
+                <div class="char-blob"></div>
+                <div class="char-lock">🔒</div>
+              </div>
+            </div>
+            <button id="enterGameBtn" class="cover-btn" type="button" disabled>进入游戏</button>
+          </div>
+
+          <div id="lastWordsModal" style="display: none;">
+            <div class="last-words-overlay"></div>
+            <div class="last-words-panel">
+              <h3 class="last-words-title">能告诉我你的名字吗？</h3>
+              <p class="last-words-text"></p>
+              <textarea id="lastWordsInput" class="last-words-input" placeholder="请输入你的名字"></textarea>
+              <div class="last-words-actions">
+                <button id="confirmLastWordsBtn" class="game-btn primary" type="button">确认输入</button>
+              </div>
+              <div id="lastWordsError" class="key-error" hidden>请至少写下一个字。</div>
+            </div>
+          </div>
+        </div>
+        <p class="game-hint">方向键移动，上键或空格跳跃，靠近宝箱按 ↓ 打开。找到钥匙后前往右侧出口。</p>
+      </section>
+
+      <section class="more-info">
+        <button id="moreInfoToggle" class="more-info-header" type="button" aria-expanded="false">
+          <span class="toggle-arrow">▸</span>
+          <span>更多信息</span>
+        </button>
+        <div id="moreInfoBody" class="more-info-body" hidden>
+          <dl class="info-list">
+            <dt>状态</dt><dd>已完成</dd>
+            <dt>发布日期</dt><dd>2026年9月15日</dd>
+            <dt>开发商</dt><dd>种下一颗大太阳</dd>
+            <dt>标签</dt>
+            <dd>
+              <span class="tag">欢乐向</span>
+              <span class="tag">童话</span>
+              <span class="tag">治愈</span>
+            </dd>
+          </dl>
+        </div>
+      </section>
+
+      <section id="commentsSection" class="comments">
+        <h2 class="comments-title">评论</h2>
+        <div class="comment-item"><div class="comment-inner">
+          <div class="comment-avatar" style="background:#4a7ca0;">上</div>
+          <div class="comment-body-wrap">
+            <div class="comment-user">上课时候不睡觉</div>
+            <div class="comment-text">？不是战斗游戏吗？总感觉和以前的demo不太一样</div>
+            <div class="comment-like">👍 8</div>
+          </div>
+        </div></div>
+        <div class="comment-item"><div class="comment-inner">
+          <div class="comment-avatar" style="background:#a06a3a;">傻</div>
+          <div class="comment-body-wrap">
+            <div class="comment-user">傻子五代</div>
+            <div class="comment-text">流程这么短的吗？不过免费的能玩就行</div>
+            <div class="comment-like">👍 5</div>
+          </div>
+        </div></div>
+        <div class="comment-item"><div class="comment-inner">
+          <div class="comment-avatar" style="background:#3a7a7a;">哈</div>
+          <div class="comment-body-wrap">
+            <div class="comment-user">哈哈啊尴尬HH</div>
+            <div class="comment-text">竟然更新了，我差点去作者坟头上香了</div>
+            <div class="comment-like">👍 12</div>
+          </div>
+        </div></div>
+        <div class="comment-item"><div class="comment-inner">
+          <div class="comment-avatar" style="background:#7a5a9a;">很</div>
+          <div class="comment-body-wrap">
+            <div class="comment-user">很舒服复杂版</div>
+            <div class="comment-text">我这是在玩5399小游戏吗？</div>
+            <div class="comment-like">👍 3</div>
+          </div>
+        </div></div>
+        <div class="comment-item"><div class="comment-inner">
+          <div class="comment-avatar" style="background:#8a5a4a;">A</div>
+          <div class="comment-body-wrap">
+            <div class="comment-user">AAA锦绣花园我最大</div>
+            <div class="comment-text">第二个角色怎么解锁啊？有人知道吗</div>
+            <div class="comment-like">👍 6</div>
+          </div>
+        </div></div>
+        <div class="comment-item"><div class="comment-inner">
+          <div class="comment-avatar" style="background:#5a7a8a;">消</div>
+          <div class="comment-body-wrap">
+            <div class="comment-user">消杀数学题</div>
+            <div class="comment-text">通不了关，我咋感觉还有大的</div>
+            <div class="comment-like">👍 9</div>
+          </div>
+        </div></div>
+
+        <div id="playerComments" class="player-comments"></div>
+        <div class="comment-form">
+          <input id="commentInput" class="comment-input" type="text" placeholder="写下你的评论……">
+          <button id="postCommentBtn" class="game-btn" type="button">发布</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="dev-test-links dev-only">
+    测试跳转：<a href="chat.html">私聊</a> | <a href="forum.html">论坛</a> | <a href="maker.html">开发者日志</a> | <a href="weibo.html">微博小号</a>
+  </div>
+
+  <!-- 密钥 a 弹窗 -->
+  <div id="keyModal" class="key-modal" style="display: none;">
+    <div class="key-modal-overlay"></div>
+    <div class="key-modal-panel" role="dialog" aria-modal="true">
+      <h3 id="keyModalTitle" class="key-modal-title">输入密钥</h3>
+      <div id="keyAFillLine" class="key-fill-line">
+        <input class="key-fill-input text-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input text-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input text-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <span class="key-fill-text">的人生在</span>
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <span class="key-fill-text">年</span>
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <span class="key-fill-text">月</span>
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <span class="key-fill-text">日停滞</span>
+      </div>
+      <div class="key-modal-actions">
+        <button id="keyConfirmBtn" class="game-btn primary" type="button">确认</button>
+        <button id="keyCloseBtn" class="game-btn" type="button">关闭</button>
+      </div>
+      <div id="keyError" class="key-error" hidden>答案不正确，请再试一次。</div>
+    </div>
+  </div>
+
+  <!-- 密钥 b 弹窗 -->
+  <div id="keyBModal" class="key-modal" style="display: none;">
+    <div class="key-modal-overlay"></div>
+    <div class="key-modal-panel" role="dialog" aria-modal="true">
+      <h3 id="keyBModalTitle" class="key-modal-title">输入密钥</h3>
+      <div id="keyBFillLine" class="key-fill-line">
+        <input class="key-fill-input text-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input text-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <span class="key-fill-text">出生于</span>
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <span class="key-fill-text">年</span>
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <span class="key-fill-text">月</span>
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <input class="key-fill-input num-input" type="text" maxlength="1" autocomplete="off" spellcheck="false">
+        <span class="key-fill-text">日</span>
+      </div>
+      <div class="key-modal-actions">
+        <button id="keyBConfirmBtn" class="game-btn primary" type="button">确认</button>
+        <button id="keyBCloseBtn" class="game-btn" type="button">关闭</button>
+      </div>
+      <div id="keyBError" class="key-error" hidden>答案不正确，请再试一次。</div>
+    </div>
+  </div>
+
+  <div id="noteModal" class="key-modal note-modal" style="display: none;">
+    <div class="key-modal-overlay"></div>
+    <div class="key-modal-panel" role="dialog" aria-modal="true">
+      <h3 id="noteModalTitle" class="key-modal-title">残损的日记</h3>
+      <p id="noteContent" class="key-modal-text note-content"></p>
+      <div class="key-modal-actions"><button id="noteCloseBtn" class="game-btn" type="button">关闭</button></div>
+    </div>
+  </div>
+
+  <div id="noteReviewModal" class="key-modal note-review-modal" style="display: none;">
+    <div class="key-modal-overlay"></div>
+    <div class="key-modal-panel" role="dialog" aria-modal="true">
+      <h3 id="noteReviewModalTitle" class="key-modal-title">残损的日记·其一</h3>
+      <p id="noteReviewModalContent" class="key-modal-text note-content"></p>
+      <div class="key-modal-actions"><button id="noteReviewModalClose" class="game-btn" type="button">关闭</button></div>
+    </div>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script src="game/levels.js"></script>
+  <script src="js/game.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!-- ============================================================
+     文件路径：index.html
+     说明：游戏入口页，作为「新的好友申请」系统通知卡片
+           点击「前往查看」同标签跳转至 chat.html
+           本次更新：
+             - 中央绿色圆形「叮」字替换为 avatar46.png 头像
+             - 图片加载失败时回退为绿色圆底白字「叮」
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新的好友申请</title>
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    /* 入口页专属样式：白绿灰主题，与私聊页面保持一致 */
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      background-color: #f0f5f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+                   Roboto, Helvetica, Arial, sans-serif;
+      color: #333333;
+    }
+
+    .notice-card {
+      background: #ffffff;
+      padding: 40px 60px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-sizing: border-box;
+      border: 1px solid #e0e8e0;
+    }
+
+    /* 圆形头像容器：绿色底作兜底 */
+    .notice-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      margin: 0 auto 24px auto;
+      overflow: hidden;
+      background-color: #4caf50;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      user-select: none;
+    }
+
+    .notice-icon img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .notice-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333333;
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+      line-height: 1.5;
+    }
+
+    .notice-btn {
+      display: inline-block;
+      background-color: #4caf50;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 36px;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .notice-btn:hover {
+      background-color: #388e3c;
+    }
+
+    .notice-btn:active {
+      transform: translateY(1px);
+    }
+
+    @media (max-width: 480px) {
+      .notice-card {
+        padding: 32px 24px;
+      }
+      .notice-title {
+        font-size: 18px;
+      }
+      .notice-btn {
+        padding: 10px 28px;
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notice-card">
+    <div class="notice-icon" id="noticeAvatarWrap">
+      <img src="assets/avatars/avatar46.png" alt="我" id="noticeAvatarImg">
+    </div>
+    <div class="notice-title">叮咚~您有一条新的好友申请</div>
+    <a href="chat.html" class="notice-btn">前往查看</a>
+  </div>
+
+  <script>
+    /* 图片加载失败时回退为绿色圆底白字「叮」 */
+    (function () {
+      'use strict';
+      var img = document.getElementById('noticeAvatarImg');
+      var wrap = document.getElementById('noticeAvatarWrap');
+      if (!img || !wrap) return;
+
+      img.addEventListener('error', function () {
+        img.style.display = 'none';
+        while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
+        wrap.textContent = '叮';
+        console.warn('[index] avatar46.png 加载失败，已回退为「叮」');
+      });
+    })();
+  </script>
+
+</body>
+</html>
